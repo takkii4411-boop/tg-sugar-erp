@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_location_form_inherit_tender" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit.tender</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <field name="usage" position="after">
+                <field name="partner_id" 
+                       string="Vendor" 
+                       domain="[('supplier_rank', '>', 0)]"
+                       options="{'no_create': True, 'no_create_edit': True}"
+                       invisible="usage != 'supplier'"/>
+            </field>
+        </field>
+    </record>
+    
+</odoo>

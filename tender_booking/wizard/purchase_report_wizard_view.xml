@@ -1,0 +1,81 @@
+<odoo>
+
+    <record id="view_purchase_report_wizard" model="ir.ui.view">
+        <field name="name">purchase.report.wizard.form</field>
+        <field name="model">purchase.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Report">
+
+                <group>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </group>
+
+                <notebook>
+                    <page string="Report Details">
+                        <field name="line_ids" nolabel="1">
+                            <list editable="bottom" create="false" delete="false">
+
+                                <field name="date" string="Date" column_invisible="not parent.show_date"/>
+                                <field name="vou_no" string="Vou No"/>
+
+                                <field name="bill_no" string="Bill No"/>
+
+                                <field name="vendor_name" string="Vendor Name"/>
+                                <field name="po_number" string="PO Number"/>
+
+                                <field name="product_id" string="Item Name"/>
+
+                                <field name="qty" string="Qty (QTL)" widget="integer" sum="Total"/>
+
+                                <field name="pur_rate" string="Pur Rate"/>
+
+                                <field name="value" string="Value" widget="integer" sum="Total"/>
+
+                                <field name="cgst" string="CGST Amt" sum="Total"/>
+
+                                <field name="sgst" string="SGST Amt" sum="Total"/>
+
+                                <field name="igst" string="IGST Amt" sum="Total"/>
+
+                                <field name="total" string="Total" widget="integer" sum="Total"/>
+
+                                <field name="tds_amt" string="TDS Amt" sum="Total"/>
+
+                                <field name="net_amt" string="Net Amt" widget="integer" sum="Total"/>
+
+                                <field name="vehicle_no" string="Vehicle No"/>
+
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+
+                <footer>
+
+                    <button name="action_print"
+                            string="Generate Report"
+                            type="object"
+                            class="btn-primary"/>
+
+                    <button name="action_excel"
+                            string="Download in Excel"
+                            type="object"
+                            class="btn-secondary"/>
+
+                    <button string="Cancel" special="cancel"/>
+
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_purchase_report_wizard" model="ir.actions.act_window">
+        <field name="name">Purchase Report</field>
+        <field name="res_model">purchase.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

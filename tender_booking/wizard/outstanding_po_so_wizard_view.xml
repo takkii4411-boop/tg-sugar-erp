@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_outstanding_po_so_wizard_form" model="ir.ui.view">
+        <field name="name">outstanding.po.so.wizard.form</field>
+        <field name="model">outstanding.po.so.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Outstanding PO SO">
+
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+
+                <notebook>
+                    <page string="Report Details">
+                         <group>
+                            <field name="select_all"/>
+                        </group>
+
+                        <field name="line_ids" nolabel="1">
+                            <list string="Outstanding PO SO" editable="bottom" create="false" delete="false">
+
+                                <field name="is_selected"/>
+                                <field name="date" column_invisible="not parent.show_date"/>
+                                <field name="order_no"/>
+                                <field name="vendor"/>
+                                <field name="item_name"/>
+                                <field name="ordered_qty" widget="integer" sum="Total"/>
+                                <field name="total_balance" widget="integer" sum="Total"/>
+                                <field name="rate"/>
+                                <field name="b_so_pending" widget="integer" sum="Total"/>
+                                <field name="p_so_pending" widget="integer" sum="Total"/>
+                                <field name="do_pending" widget="integer" sum="Total"/>
+                                <field name="tender_bal" widget="integer" sum="Total"/>
+                                <field name="balance_payment"/>
+                                <field name="b_so_amt" sum="Total"/>
+                                <field name="do_amt" sum="Total"/>
+                                <field name="p_so_amt" sum="Total"/>
+                                <field name="total_pay" sum="Total"/>
+                                <field name="vendor_ac_bal"/>
+                                <field name="pay_date"/>
+                                <field name="lift_date"/>
+
+                            </list>
+                        </field>
+
+                    </page>
+                </notebook>
+
+                <footer>
+                    <button string="Generate Report"
+                            type="object"
+                            name="action_print_report"
+                            class="btn-primary"/>
+
+                    <button name="action_excel"
+                            string="Download in Excel"
+                            type="object"
+                            class="btn-secondary"/>
+
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_outstanding_po_so_wizard" model="ir.actions.act_window">
+        <field name="name">Outstanding PO SO</field>
+        <field name="res_model">outstanding.po.so.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

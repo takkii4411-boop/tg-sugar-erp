@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="view_freight_charge" model="ir.ui.view">
+            <field name="name">freight.charge.line.form</field>
+            <field name="model">freight.charge.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="total_qty"/>
+                                <field name="rate_per_quintal"/>
+                                <field name="total_amount"/>
+                            </group>
+                            <group>
+                                <field name="freight_expense_account_id"/>
+                                <field name="freight_payable_account_id"/>
+                                <field name="journal_id"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button string="Add" type="object" name="action_add_line" class="btn-primary"/>
+                            <button string="Cancel" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,356 @@
+<odoo>
+  <template id="report_sale_order_document">
+    <t t-call="web.basic_layout">
+     <style>
+        .page-break {
+          page-break-after: always;
+        }
+        .page-break:last-child {
+          page-break-after: auto;
+        }
+      </style>
+      <t t-foreach="docs" t-as="doc">
+      <div class="page page-break" style="font-family:'DejaVu Sans'; font-size:11px;">
+
+        <div style="text-align:center;font-size:28px;font-weight:bold; margin-bottom:12px;">
+          PARTY SALES ORDER
+        </div>
+
+        <table style="width:100%; border:1.5px solid #000; border-collapse:collapse;">
+
+          <tr>
+          <td style="border-bottom:1px solid #000; padding:6px;">
+            <table style="width:100%; border-collapse:collapse;">
+              <tr>
+                <td style="width:18%; text-align:center; vertical-align:middle;">
+                  <img t-att-src="'/party_sale_modifier_hmrc/static/description/logo.png'" style="max-height:200px;"/>
+                </td>
+
+                <td style="width:82%; text-align:right; padding-right:20px;">
+
+                  <div style="font-size:10px; line-height:14px; color:#000;">
+                    Jai Mahaveer
+                  </div>
+
+                  <div style="font-size:18px; font-weight:bold; color:#7a1f6a;">
+                    TG Sugars Limited
+                  </div>
+
+                  <div style="font-size:10px; line-height:14px; color:#000; border-bottom:1px solid #000;">
+                    Office No. 3, Jai Mahaveer House, First Floor, Datta Chowk, Karad - 415110<br/>
+
+                    <span style="color:#7a1f6a; font-weight:bold;">Tel : </span>
+                    (02164) 224999, 225999, 226999
+                    <span style="margin-left:8px;"></span>
+                    <span style="color:#7a1f6a; font-weight:bold;">Fax : </span>
+                     02164 223300<br/>
+
+                    <span style="color:#7a1f6a; font-weight:bold;">Fssai : </span>
+                    11523085000218
+                    <span style="margin-left:8px;"></span>
+
+                    <span style="color:#7a1f6a; font-weight:bold;">CIN : </span>
+                    U74999MH2017PLC299084
+                    <span style="margin-left:8px; font-weight:bold;"></span>
+
+                    <span style="color:#7a1f6a; font-weight:bold;">GSTIN : </span>
+                    27AAGCT4041B1ZQ
+                  </div>
+
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+
+          <tr>
+            <td style="border-bottom:1px solid #000; text-align:center; font-weight:bold; padding:4px;">
+              SALES ORDER
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <!-- LEFT -->
+                 <td style="width:100%; padding:6px; line-height:18px; border:1px solid #000;">
+
+                  <strong>P SO No.: </strong> <t t-esc="doc.name"/>
+                  <span style="display:inline-block; width:60px;"></span>
+                  <strong>Date: </strong> <t t-esc="doc.date_order.strftime('%d-%m-%Y')"/>
+                  <span style="display:inline-block; width:60px;"></span>
+                  <strong>Mill Name: </strong> <t t-esc="doc.tender_id.partner_id.name or ''"/><br/>
+
+                  <strong>B SO No.: </strong>  <t t-esc="doc.broker_allotment_id.name"/><br/>
+
+                  <strong>Through: </strong> <t t-esc="doc.through"/>
+                  <span style="display:inline-block; width:60px;"></span>
+                  <strong>Credit Days: </strong> <t t-esc="doc.payment_term_id.name or 'Immediate'"/>
+
+                  <span style="display:inline-block; width:60px;"></span>
+                  <strong>Pay Date: </strong> <t t-esc="doc.pay_date"/>
+                  <span style="display:inline-block; width:60px;"></span>
+                  <strong>Lifting Date: </strong> <t t-esc="doc.lift_date"/>
+                </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <!-- LEFT -->
+                  <td style="width:50%; border-right:1px solid #000; padding:6px; line-height:18px;">
+                    <t t-set="invoice_partner"
+                        t-value="doc.partner_invoice_id or doc.partner_id"/>
+
+                    <strong>Bill To: </strong> <t t-esc="doc.partner_id.name"/>  <br/>   
+                    <strong>Party Name: </strong> <t t-esc="doc.broker_id.name"/> <br/>
+                    <strong>Full Address: </strong>
+                      <span t-field="invoice_partner.contact_address"/> <br/>
+                    <strong>GST No.: </strong> <t t-esc="doc.partner_id.vat"/><br/>
+                    <strong>Fassi No.: </strong> <t t-esc="doc.partner_id.fassi_no or ''"/><br/>
+                    <strong>Mobile No.: </strong> <t t-esc="doc.partner_shipping_id.phone"/>
+                    <br/>                    
+                  </td>
+
+                  <!-- RIGHT -->
+                  <td style="width:50%; padding:6px; line-height:18px;">
+                        <t t-set="shipping_partner"
+                       t-value="doc.partner_shipping_id or doc.partner_id"/>
+
+                    <strong>Ship To: </strong> <t t-esc="doc.partner_shipping_id.name"/><br/>
+                    <strong>Party Name: </strong> <t t-esc="doc.broker_id.name"/> <br/>
+                    <strong>Full Address: </strong> 
+                      <span t-field="shipping_partner.contact_address"/> <br/>
+
+                    <strong>GST No.: </strong> <t t-esc="doc.partner_shipping_id.vat or ''"/><br/>
+                    <strong>Fassi No.: </strong> <t t-esc="doc.partner_id.fassi_no or ''"/><br/>
+                    <strong>Mobile No.: </strong> <t t-esc="doc.partner_shipping_id.phone"/>
+                      <br/>  
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr style="font-weight:bold; text-align:center;">
+                  <td style="border:1px solid #000; width:5%;">Sr.No.</td>
+                  <td style="border:1px solid #000; width:35%;">Description of Goods</td>
+                  <td style="border:1px solid #000; width:8%;">Type</td>
+                  <td style="border:1px solid #000; width:10%;">QTY (in Qtl)</td>
+                  <td style="border:1px solid #000; width:12%;">P So Rate</td>
+                  <!-- <td style="border:1px solid #000; width:12%;">Inc. Rate</td> -->
+                  <td style="border:1px solid #000; width:18%;">Amount</td>
+                </tr>
+                <t t-foreach="doc.order_line" t-as="l">
+                <t t-set="sr_no" t-value="(sr_no or 0) + 1"/>
+                <tr style="height:32px;">
+                  <td style="border:1px solid #000; text-align:center;"> <t t-esc="sr_no"/></td>
+                  <td style="border:1px solid #000; text-align:center;"> <t t-esc="l.product_id.name"/></td>
+                  <td style="border:1px solid #000; text-align:center;">  <t t-esc="dict(doc._fields['rate_type'].selection).get(doc.rate_type)"/> </td>
+                  <td style="border:1px solid #000; text-align:center;"> <t t-esc="int(l.product_uom_qty)"/> <br/>
+
+                <t t-set="po_line"
+                  t-value="doc.env['purchase.order.line'].search([
+                      ('order_id', '=', doc.tender_id.id),
+                      ('product_id', '=', l.product_id.id)
+                  ], limit=1)"/>
+
+                <t t-if="po_line and po_line.cus_packing_id">
+
+                    <t t-set="pack_name" t-value="po_line.cus_packing_id.name"/>
+
+                    <t t-set="per_qt" t-value="po_line.cus_packing_id.per_qt_quantity or 0"/>
+
+                    <t t-set="total_qty_kg" t-value="l.product_uom_qty"/>
+
+                    <t t-set="total_qty_qt" t-value="total_qty_kg / 100"/>
+
+                    <t t-if="per_qt and total_qty_qt">
+                        <t t-set="bags" t-value="total_qty_qt*100 / per_qt"/>
+                        <span style="font-size:10px;">
+                            <t t-esc="int(bags)"/> <t t-esc="pack_name"/>
+                        </span>
+                    </t>
+
+                    <t t-if="not per_qt">
+                        <span style="font-size:10px;">
+                            <t t-esc="int(total_qty_kg)"/> <t t-esc="pack_name"/>
+                        </span>
+                    </t>
+                </t>
+                  </td>
+                  <td style="border:1px solid #000; text-align:center;">  <t t-esc="l.price_unit"/> </td>
+                  <!-- <td style="border:1px solid #000; text-align:center;"> <t t-esc="l.price_unit"/></td> -->
+                  <td style="border:1px solid #000; text-align:center;">  <t t-esc="l.price_subtotal"/> </td>
+                </tr>
+              </t>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+              <td style="padding:0; border-bottom:1px solid #000;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <td style="width:40%; border-right:1px solid #000; padding:6px; line-height:18px;">
+                    <strong style="text-align:center">Bank Details</strong><br/>
+                   <t t-if="doc.partner_id.bank_ids">
+                      Bank Name :
+                      <t t-esc="doc.partner_id.bank_ids[0].bank_id.name or ''"/><br/>
+
+                      Account No :
+                      <t t-esc="doc.partner_id.bank_ids[0].acc_number or ''"/><br/>
+
+                      IFSC :
+                      <t t-esc="doc.partner_id.bank_ids[0].bank_id.bic or ''"/><br/>
+                  </t>
+
+                  <t t-else="">
+                      Bank Name : _____________<br/>
+                      Account No : _____________ IFSC : _____________<br/>
+                  </t>
+                  </td>
+
+                  <td style="width:42%; border-right:1px solid #000; line-height:18px;">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="padding:0; border-bottom:1px solid #000;">
+                          <table style="width:100%; border-collapse:collapse;">
+                            <tr>
+                              <td style="width:19%; padding:6px; border-right:1px solid #000;">
+                                
+                              </td>
+                              <td style="width:24%; padding:6px; border-right:1px solid #000; text-align:right;">
+                                
+                              </td>
+                              <td style="width:57%; padding:6px; text-align:center;">
+                                Total
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td style="padding:6px; border-bottom:1px solid #000;">GST: 
+                          <t t-if="doc.order_line and doc.order_line[0].tax_ids">
+                            <t t-esc="', '.join([str(int(t.amount)) + '%' for t in doc.order_line[0].tax_ids])"/>
+                          </t>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:6px; border-bottom:1px solid #000;">P SO Total</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="width:18%; border-right:1px solid #000; line-height:18px;">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="padding:6px; border-bottom:1px solid #000;"><t t-esc="doc.amount_untaxed"/></td>
+                      </tr>
+                      <tr>
+                        <td style="padding:6px; border-bottom:1px solid #000;"><t t-esc="doc.amount_tax"/></td>
+                      </tr>
+                      <tr>
+                        <td style="padding:6px; border-bottom:1px solid #000;"><t t-esc="doc.amount_total"/></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+              <td style="padding:0; border-bottom:1px solid #000;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <td style="width:60%; border-right:1px solid #000; padding:6px; line-height:18px;">
+                    Narration : <t t-raw="doc.note"/>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0; border-bottom:1px solid #000;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+                  <t t-set="invoice"
+                    t-value="doc.invoice_ids.filtered(lambda i: i.state == 'posted')[:1]"/>
+
+                  <td style="width:30%; border-right:1px solid #000; padding:6px; line-height:18px;">
+                    Party Balance :
+                    <t t-if="invoice">
+                        <t t-esc="invoice.amount_residual"/>
+                    </t>
+                    <t t-else="">
+                        0.00
+                    </t>                
+                  </td>
+
+                  <td style="width:70%; padding:6px; line-height:18px; font-weight:bold;">
+                   Kindly share your TDS Declaration, If you have Given Declaration then you can Deduct TDS and Inform Details
+
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0;">
+              <table style="width:100%; border-collapse:collapse;">
+                <tr>
+               <td style="width:75%; border-right:1px solid #000; padding:6px; line-height:18px;">
+                <strong>Note - Please Call or Whatsapp any Future Information</strong><br/>
+
+                <div style="display:flex; justify-content:space-between;">
+                  <span>1) Mr. Raj Bhandari ( Sales Booking And Invoice )</span>
+                  <span style="white-space:nowrap; margin-right:20px;">M.No. 7875555172</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                  <span>2) Mr. Deep Luniya ( Delivery Order )</span>
+                  <span style="white-space:nowrap; margin-right:20px;">M.No. 7875555177</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                  <span>3) Mr. Swaroop Karale</span>
+                  <span style="white-space:nowrap; margin-right:20px;">M.No. 7875555174</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                  <span>4) Mr. Sachin Waghmare ( Accounts )</span>
+                  <span style="white-space:nowrap; margin-right:20px;">M.No. 7875555171</span>
+                </div>
+              </td>
+
+                  <td style="width:25%; text-align:center; font-weight:bold; vertical-align:middle;">
+                    TG Sugars Ltd
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+
+      </div>
+    </t>
+  </t>
+  </template>
+</odoo>
+
+
+ 

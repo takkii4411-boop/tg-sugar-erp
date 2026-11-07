@@ -1,0 +1,145 @@
+<odoo>
+   <record id="sales_report_action" model="ir.actions.report">
+        <field name="name">Sales Report</field>
+        <field name="model">sales.report.wizard.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">party_sale_modifier_hmrc.sales_report_template</field>
+        <field name="print_report_name">'Sales Report'</field>
+    </record>
+
+    <template id="sales_report_template">
+        <t t-call="web.basic_layout">
+            <t t-set="ctx" t-value="env.context"/>
+
+            <h3 style="text-align:center;">TG Sugars LTD</h3>
+            <h4 style="text-align:center;">Sales Report</h4>
+            <p style="text-align:center;">
+                <t t-if="ctx.get('date_from')">
+                    <t t-esc="ctx.get('date_from')"/>
+                </t>
+                <t t-if="ctx.get('date_from') and ctx.get('date_to')"> - </t>
+                <t t-if="ctx.get('date_to')">
+                    <t t-esc="ctx.get('date_to')"/>
+                </t>
+            </p>
+
+            <table class="table table-bordered" style="font-size:12px;">
+                <thead>
+                    <tr style="background-color:#d3d3d3; font-weight:bold;">
+                        <th t-if="ctx.get('date_from') != ctx.get('date_to')"><b>Inv Date</b></th>
+                        <th><b>Inv No</b></th>
+                        <th><b>Particulars/ Customer name and city</b></th>
+                        <th><b>Broker</b></th>
+                        <th><b>Item Name</b></th>
+                        <th><b>Qty(QTL)</b></th>
+                        <th><b>Type</b></th>
+                        <th><b>SO Rate</b></th>
+                        <th><b>Value</b></th>
+                        <th><b>CGST Amt.</b></th>
+                        <th><b>SGST Amt.</b></th>
+                        <th><b>IGST Amt.</b></th>
+                        <th><b>Total</b></th>
+                        <th><b>Diff</b></th>
+                        <th><b>Cr Days</b></th>
+                        <th><b>Frt</b></th>
+                        <th><b>Advance(Less)</b></th>
+                        <th><b>Total Pay</b></th>
+                        <th><b>Vehicle No.</b></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <t t-set="total_qty" t-value="0"/>
+                    <t t-set="total_value" t-value="0"/>
+                    <t t-set="total_total" t-value="0"/>
+                    <t t-set="total_cgst" t-value="0"/>
+                    <t t-set="total_sgst" t-value="0"/>
+                    <t t-set="total_igst" t-value="0"/>
+                    <t t-set="total_diff" t-value="0"/>
+
+                    <t t-foreach="docs" t-as="l">
+                        <tr>
+                            <td t-if="ctx.get('date_from') != ctx.get('date_to')">
+                                <t t-esc="l.invoice_date or ''"/>
+                            </td>
+                            <td><t t-esc="l.invoice_no or ''"/></td>
+
+                            <td>
+                                <t t-esc="l.customer_name or ''"/>
+                            </td>
+
+                            <td>
+                                <t t-esc="l.broker or ''"/>
+                            </td>
+
+                            <td><t t-esc="l.product_id.name or ''"/></td>
+
+                            <td>
+                                <t t-set="total_qty" t-value="total_qty + (l.qty or 0)"/>
+                                <t t-esc="int(l.qty)"/>
+                            </td>
+
+                            <td><t t-esc="l.type or ''"/></td>
+
+                            <td><t t-esc="l.rate"/></td>
+
+                            <td>
+                                <t t-set="total_value" t-value="total_value + (l.value or 0)"/>
+                                <t t-esc="int(l.value)"/>
+                            </td>
+
+                            <td>
+                                <t t-set="total_cgst" t-value="total_cgst + (l.cgst or 0)"/>
+                                <t t-esc="int(l.cgst)"/>
+                            </td> 
+                            <td>
+                                <t t-set="total_sgst" t-value="total_sgst + (l.sgst or 0)"/>
+                                <t t-esc="int(l.sgst)"/>
+                            </td>
+                            <td>
+                                <t t-set="total_igst" t-value="total_igst + (l.igst or 0)"/>
+                                <t t-esc="int(l.igst)"/>
+                            </td>
+                            <td>
+                                <t t-set="total_total" t-value="total_total + (l.total or 0)"/>
+                                <t t-esc="round(l.total)"/>
+                            </td>
+
+                            <td>
+                                <t t-set="total_diff" t-value="total_diff + (l.diff or 0)"/>
+                                <t t-esc="l.diff"/>
+                            </td>
+                            <td><t t-esc="l.cr_days"/></td>
+                            <td><t t-esc="l.frt"/></td>
+                            <td></td>
+                            <td><t t-esc="l.total_pay"/></td>
+                            <td><t t-esc="l.vehicle_no"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+
+                <tfoot>
+                    <tr style="background-color:#d3d3d3; font-weight:bold; color:black;">
+                        <td t-att-colspan="5 if ctx.get('date_from') != ctx.get('date_to') else 4">
+                            <b>Total</b>
+                        </td>
+                        <td><t t-esc="total_qty"/></td>
+                        <td></td>
+                        <td></td>
+                        <td><t t-esc="total_value"/></td>
+                        <td><t t-esc="total_cgst"/></td>
+                        <td><t t-esc="total_sgst"/></td>
+                        <td><t t-esc="total_igst"/></td>
+                        <td><t t-esc="total_total"/></td>
+                        <td><t t-esc="total_diff"/></td>
+                        <td colspan="6"></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </t>
+    </template>
+</odoo>
+
+
+ 

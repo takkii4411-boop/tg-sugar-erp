@@ -1,0 +1,183 @@
+<odoo>
+    <record id="view_picking_form_create_invoice_button" model="ir.ui.view">
+        <field name="name">stock.picking.form.create.invoice.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+                <field name="invoice_created" invisible="1"/>
+                <field name="is_immediate_payment" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button name="action_create_customer_invoice"
+                        type="object"
+                        string="Create Customer Invoice"
+                        class="btn-primary"
+                        confirm="Are you sure you want to create Customer Invoice?"
+                        invisible="state != 'done' or invoice_created or picking_type_code == 'incoming'"/>
+            </xpath>
+
+            <!-- <xpath expr="//page[@name='operations']//field[@name='move_ids']//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//field[@name='quantity']"
+                   position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath> -->
+            <xpath expr="//page[@name='operations']//control/create" position="attributes">
+                <attribute name="invisible">parent.picking_type_code == 'outgoing'</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_picking_form_vendor_bill_button" model="ir.ui.view">
+        <field name="name">stock.picking.form.vendor.bill.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+                <field name="vendor_bill_created" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_create_vendor_bill"
+                    type="object"
+                    string="Create Vendor Bill"
+                    class="btn-primary"
+                    confirm="Are you sure you want to create Vendor Bill?"
+                    invisible="state != 'done' or vendor_bill_created or picking_type_code == 'incoming'"/>
+
+                <button name="action_add_freight" string="Add Freight Charge" type="object" class="oe_highlight" invisible="sale_id.rate_type != 'for' and state != 'done'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_form_inherit_invoice_button" model="ir.ui.view">
+        <field name="name">stock.picking.form.invoice.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+                <field name="invoice_count" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_view_customer_invoices"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-file-invoice-dollar"
+                    invisible="state != 'done' or invoice_count == 0">
+                    <field name="invoice_count" widget="statinfo" string="Customer Invoice"/>
+                </button>
+                <button name="action_view_freight_entries"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-truck"
+                    invisible="freight_count == 0 or state != 'done'">
+                    <field name="freight_count" widget="statinfo" string="Freight"/>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_picking_form_hide_dates" model="ir.ui.view">
+        <field name="name">stock.picking.form.hide.dates</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scheduled_date']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='339']" position="attributes">
+                <attribute name="groups">party_sale_modifier_hmrc.group_return_do_access</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='date_done']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[.//field[@name='company_id']]//group/group[1]" position="after">
+                <group string="Tender Details">
+                    <field name="tender_no"/>
+                    <field name="broker_no"/>
+                    <field name="vendor_bill_id"/>
+                    <field name="customer_invoice_id"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//sheet//group//field[@name='partner_id']" position="after">
+                <field name="customer_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//sheet//group//field[@name='date_deadline']" position="before">
+                <field name="voucher_date"/>
+            </xpath>
+        </field>
+
+    </record> 
+    <record id="view_picking_tree_merge_invoice" model="ir.ui.view">
+        <field name="name">stock.picking.tree.merge.invoice</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//list" position="inside">
+                <header>
+                    <button name="action_create_merged_customer_invoice" type="object" string="Create Merged Invoice" class="btn-primary"/>
+                    <button name="action_create_merged_vendor_bill" type="object" string="Create Merged Vendor Bill" class="btn-primary"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="tender_no" optional="hide"/>
+                <field name="broker_no" optional="hide"/>
+                <field name="po_rate" optional="hide"/>
+                <field name="vendor_amount" optional="hide"/>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="product_id" string="Items" optional="hide"/>
+            </xpath>
+
+    	    <xpath expr="//field[@name='state']" position="after">
+                <field name="invoice_status"
+                    widget="badge"
+                    decoration-success="invoice_status == 'done'"
+                    decoration-muted="invoice_status == 'draft'" optional="hide"/>
+
+                <field name="vendor_bill_status"
+                    widget="badge"
+                    decoration-success="vendor_bill_status == 'done'"
+                    decoration-muted="vendor_bill_status == 'draft'" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="stock_picking_search_inherit_draft_filter" model="ir.ui.view">
+        <field name="name">stock.picking.search.draft.filter</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+
+                <filter name="draft_invoice_vendor"
+                    string="Draft Invoice &amp; Vendor Bill"
+                    domain="[('invoice_status','=','draft'),
+                            ('vendor_bill_status','=','draft')]"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

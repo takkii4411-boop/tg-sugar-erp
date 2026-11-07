@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_tender_balance_wizard_form" model="ir.ui.view">
+        <field name="name">tender.balance.report.wizard.form</field>
+        <field name="model">tender.balance.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Outstanding Tender Balance Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1" context="{'date_from_field': date_from}"/>
+                        </group>
+                        <group>
+                            <field name="vendor_ids" widget="many2many_tags" placeholder="Select specific vendors (leave empty for all)" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Report Details">
+                            <field name="report_line_ids" nolabel="1">
+                                <list string="Outstanding Tender Balance" create="0" edit="0" delete="0" export_xlsx="1">
+                                    <field name="date"/>
+                                    <field name="booking_no" string="Tender No."/>
+                                    <field name="order_no" string="Odoo Ord..."/>
+                                    <field name="vendor_name" string="Vendor Na..."/>
+                                    <field name="item"/>
+                                    <field name="rate" widget="monetary"/>
+                                    <field name="op_qty" string="OP Qty" sum="Total OP Qty"/>
+                                    <field name="unsold_bal_qty" string="Unsold Bal ..." sum="Total Unsold Bal Qty"/>
+                                    <field name="brk_bal_qty" string="Brk bal Q" sum="Total Brk Bal Qty"/>
+                                    <field name="p_bal_qty" string="Party Qty" sum="Total Party Qty"/>
+                                    <field name="total_bal_os" string="Total Bal O/s" sum="Total Bal O/s" widget="monetary"/>
+                                    <field name="ledger_bal" string="Ledger bal" sum="Total Ledger Bal" widget="monetary"/>
+                                    <!-- <button name="action_open_record" string="Open" type="object" icon="fa-external-link" class="btn-link"/> -->
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button name="action_export_report" string="Download in Excel" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_tender_balance_report_wizard" model="ir.actions.act_window">
+        <field name="name">Outstanding Tender Balance Report</field>
+        <field name="res_model">tender.balance.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_tender_balance_wizard_form"/>
+        <field name="context">{'dialog_size': 'extra-large'}</field>
+    </record>
+    
+</odoo>

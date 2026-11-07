@@ -1,0 +1,36 @@
+<odoo>
+
+  <record id="action_party_sale_order" model="ir.actions.act_window">
+    <field name="name">Party Sale Order</field>
+    <field name="res_model">sale.order</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('is_party_sale', '=', True)]</field>
+    <!-- <field name="context">{'default_is_party_sale': True}</field> -->
+    <field name="context" eval="{
+        'default_is_party_sale': True,
+        'search_default_balance_qty_available': 1
+    }"/>
+  </record>
+
+  <menuitem name="Party Sale Order" id="party_menu_root" web_icon="party_sale_modifier_hmrc,static/description/deal.png" action="action_party_sale_order"/>
+
+  <menuitem id="menu_party_allotment_root" name="Party Sale Order" parent="party_menu_root" sequence="10"/>
+  
+  <menuitem id="menu_report_root" name="Report" parent="party_menu_root" sequence="10"/>
+
+  <menuitem id="menu_party_sale_orders" name="Party Sale Order" parent="party_menu_root" action="action_party_sale_order" sequence="30"/>
+
+  <menuitem id="menu_party_allotment_tree" name="Party Pending List" parent="menu_report_root" action="action_party_allotment_tree_view" sequence="30"/>
+
+  <menuitem id="menu_sales_report"
+          name="Sales Report"
+          parent="menu_report_root"
+          action="action_sales_report_wizard"
+          sequence="40"/>
+
+  <menuitem id="menu_configure_root" name="Configuration" parent="party_menu_root" sequence="40"/>
+  <menuitem id="menu_overdue_charge" name="Day Wise Credit Charge" parent="menu_configure_root" action="overdue_charge_action_window" sequence="10"/>
+
+  <menuitem id="menu_transport_master" name="Transport Master" parent="menu_configure_root" action="action_transport_master" sequence="20"/>
+
+</odoo>

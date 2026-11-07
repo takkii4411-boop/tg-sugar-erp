@@ -1,0 +1,9 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+
+tally_export_invoice,tally.export.invoice,model_tally_export_invoice,account.group_account_invoice,1,1,1,1
+tally_field_mapping,tally.field.mapping,model_tally_field_mapping,account.group_account_invoice,1,1,1,1
+tally_mapping_line,tally.mapping.line,model_tally_mapping_line,account.group_account_invoice,1,1,1,1
+tally_tag,tally.tag,model_tally_tag,account.group_account_invoice,1,1,1,1
+tally_configuration,tally.configuration,model_tally_configuration,account.group_account_invoice,1,1,1,1
+
+

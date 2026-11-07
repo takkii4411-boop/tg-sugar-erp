@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="external_layout_boxed_custom">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/></t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/></t>
+            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                <h1 style="text-align:center;"><b>MILL DO</b></h1>
+                <table class="table table-borderless" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                    <tr>
+                        <td style="width:15%; vertical-align: middle;">
+                          <img t-att-src="'/party_sale_modifier_hmrc/static/description/logo.png'" style="max-height:200px;"/>
+                        </td>
+
+                        <td style="width:85%; text-align:right; vertical-align:top;">
+                            <h5 style="width:85%; text-align:right; vertical-align:top; font-size:10px;">Jai Mahaveer</h5>
+                            <h2 style="color:#782575; margin:0; font-weight: bold; font-size:25px;">
+                                <b><t t-esc="company.name"/></b>
+                            </h2>
+
+                            <div style="font-size:15px;">
+                                <!-- <strong style="color:#782575;">Office &amp; Mfg. Unit :</strong><br/> -->
+                                <t style="color:#782575;" t-esc="company.street"/> <t style="color:#782575;" t-esc="company.street2"/>
+                                <t style="color:#782575;" t-esc="company.city"/> - <t style="color:#782575;" t-esc="company.zip"/>,
+                                <t style="color:#782575;" t-esc="company.state_id.name"/>,
+                                <t style="color:#782575;" t-esc="company.country_id.name"/><br/> 
+
+                                <b style="color:#782575; font-size:15px;">Tel : </b><t style="color:#782575;" t-esc="company.phone"/> |
+                                <b style="color:#782575; font-size:15px;">Fax : </b><t style="color:#782575;" t-esc="company.fax"/><br/>
+                                <b style="color:#782575;">Fssai : </b><t style="color:#782575;" t-esc="company.fssai_no"/>
+                                <b style="color:#782575; border-top:1px;">CIN : </b><t style="color:#782575;" t-esc="company.company_registry"/>
+                                <b style="color:#782575; border-bottom:1px;">GSTIN : </b><t style="color:#782575;" t-esc="company.vat"/><br/><br/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout {{  'o_report_layout_background' if company.layout_background in ['Geometric', 'Custom']  else  '' }}" t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8') if company.layout_background_image and company.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' }});" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-0 mt-0">
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
+            </div>
+
+            <!-- <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
+                <div class="text-center" style="font-size: 8px;">
+                    <div t-if="report_type == 'pdf'">
+                        <p style="text-align: right; border-top: 2px solid black; width: 100%; font-size: 15px;">
+                            Receiving with Stamp and Signature
+                        </p>
+                    </div>
+                </div>
+            </div> -->
+        </template>
+        <template id="external_layout_boxed_custom_invoice">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/></t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/></t>
+            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                <h1 style="text-align:center;"><b>BROKER AND PARTY DO AND PROFORMA</b></h1>
+                <table class="table table-borderless" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                    <tr>
+                        <td style="width:15%; vertical-align: middle;">
+                          <img t-att-src="'/party_sale_modifier_hmrc/static/description/logo.png'" style="max-height:200px;"/>
+                        </td>
+
+                        <td style="width:85%; text-align:right; vertical-align:top;">
+                            <h5 style="width:85%; text-align:right; vertical-align:top; font-size:10px;">Jai Mahaveer</h5>
+                            <h2 style="color:#782575; margin:0; font-weight: bold; font-size:25px;">
+                                <b><t t-esc="company.name"/></b>
+                            </h2>
+
+                            <div style="font-size:15px;">
+                                <!-- <strong style="color:#782575;">Office &amp; Mfg. Unit :</strong><br/> -->
+                                <t style="color:#782575;" t-esc="company.street"/> <t style="color:#782575;" t-esc="company.street2"/>
+                                <t style="color:#782575;" t-esc="company.city"/> - <t style="color:#782575;" t-esc="company.zip"/>,
+                                <t style="color:#782575;" t-esc="company.state_id.name"/>,
+                                <t style="color:#782575;" t-esc="company.country_id.name"/><br/>
+
+                                <b style="color:#782575; font-size:15px;">Tel : </b><t t-esc="company.phone"/> |
+                                <b style="color:#782575; font-size:15px;">Fax : </b><t t-esc="company.fax"/><br/>
+                                <b style="color:#782575;">Fssai : </b><t t-esc="company.fssai_no"/>
+                                <b style="color:#782575; border-top:1px;">CIN : </b><t t-esc="company.company_registry"/>
+                                <b style="color:#782575; border-bottom:1px;">GSTIN : </b><t t-esc="company.vat"/><br/><br/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout {{  'o_report_layout_background' if company.layout_background in ['Geometric', 'Custom']  else  '' }}" t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8') if company.layout_background_image and company.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' }});" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-0 mt-0">
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
+            </div>
+        </template>
+        <template id="external_layout_boxed_custom_office">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/></t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/></t>
+            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                <h1 style="text-align:center;"><b>OFFICE COPY</b></h1>
+                <table class="table table-borderless" style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                    <tr>
+                        <td style="width:15%; vertical-align: middle;">
+                          <img t-att-src="'/party_sale_modifier_hmrc/static/description/logo.png'" style="max-height:200px;"/>
+                        </td>
+
+                        <td style="width:85%; text-align:right; vertical-align:top;">
+                            <h5 style="width:85%; text-align:right; vertical-align:top; font-size:10px;">Jai Mahaveer</h5>
+                            <h2 style="color:#782575; margin:0; font-weight: bold; font-size:25px;">
+                                <b><t t-esc="company.name"/></b>
+                            </h2>
+
+                            <div style="font-size:15px;">
+                                <!-- <strong style="color:#782575;">Office &amp; Mfg. Unit :</strong><br/> -->
+                                <t style="color:#782575;" t-esc="company.street"/> <t style="color:#782575;" t-esc="company.street2"/>
+                                <t style="color:#782575;" t-esc="company.city"/> - <t style="color:#782575;" t-esc="company.zip"/>,
+                                <t style="color:#782575;" t-esc="company.state_id.name"/>,
+                                <t style="color:#782575;" t-esc="company.country_id.name"/><br/>
+
+                                <b style="color:#782575; font-size:15px;">Tel : </b><t t-esc="company.phone"/> |
+                                <b style="color:#782575; font-size:15px;">Fax : </b><t t-esc="company.fax"/><br/>
+                                <b style="color:#782575;">Fssai : </b><t t-esc="company.fssai_no"/>
+                                <b style="color:#782575; border-top:1px;">CIN : </b><t t-esc="company.company_registry"/>
+                                <b style="color:#782575; border-bottom:1px;">GSTIN : </b><t t-esc="company.vat"/><br/><br/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout {{  'o_report_layout_background' if company.layout_background in ['Geometric', 'Custom']  else  '' }}" t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8') if company.layout_background_image and company.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' }});" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-0 mt-0">
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
+            </div>
+        </template>
+    </data>
+</odoo>

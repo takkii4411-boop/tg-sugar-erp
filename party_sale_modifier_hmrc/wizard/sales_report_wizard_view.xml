@@ -1,0 +1,95 @@
+<odoo>
+
+    <record id="view_sales_report_wizard" model="ir.ui.view">
+        <field name="name">sales.report.wizard.form</field>
+        <field name="model">sales.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sales Report">
+
+                <group>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+
+                </group>
+
+                <notebook>
+                    <page string="Report Details">
+                        <group>
+                            <field name="select_all"/>
+                        </group>
+                        <field name="line_ids" nolabel="1">
+                            <list editable="bottom" create="false" delete="false">
+
+                                <field name="is_selected"/>
+
+                                <field name="invoice_date" column_invisible="not parent.show_date"/>
+
+                                <field name="invoice_no" string="Inv No"/>
+
+                                <field name="customer_name" string="Customer / City"/>
+
+                                <field name="broker" string="Broker"/>
+
+                                <field name="product_id" string="Item Name"/>
+
+                                <field name="qty" string="Qty" widget="integer" sum="Total"/>
+
+                                <field name="type" string="Type"/>
+
+                                <field name="rate" string="SO Rate"/>
+
+                                <field name="value" string="Value" widget="integer" sum="Total"/>
+
+                                <field name="cgst" string="CGST Amt" sum="Total"/>
+
+                                <field name="sgst" string="SGST Amt" sum="Total"/>
+
+                                <field name="igst" string="IGST Amt" sum="Total"/>
+
+                                <field name="total" string="Total" widget="integer" sum="Total"/>
+
+                                <field name="diff" string="Diff" sum="Total"/>
+
+                                <field name="cr_days" string="Cr Days"/>
+
+                                <field name="frt" string="Frt"/>
+
+                                <field name="advance" string="Advance (Less)"/>
+
+                                <field name="total_pay" string="Total to Pay"/>
+
+                                <field name="vehicle_no" string="Vehicle No"/>
+
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+
+                <footer>
+
+                    <button name="action_print"
+                            string="Generate Report"
+                            type="object"
+                            class="btn-primary"/>
+
+                    <button name="action_excel"
+                            string="Download in Excel"
+                            type="object"
+                            class="btn-secondary"/>
+
+                    <button string="Cancel" special="cancel"/>
+
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sales_report_wizard" model="ir.actions.act_window">
+        <field name="name">Sales Report</field>
+        <field name="res_model">sales.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_broker_allotment,access_broker_allotment,model_broker_allotment,base.group_user,1,1,1,1
+access_broker_allotment_line,access_broker_allotment_line,model_broker_allotment_line,base.group_user,1,1,1,1
+
+access_broker_balance_report_wizard,broker.balance.report.wizard,model_broker_balance_report_wizard,base.group_user,1,1,1,1
+access_broker_balance_report_line,broker.balance.report.line,model_broker_balance_report_line,base.group_user,1,1,1,1
+access_price_update_whatsapp_wizard,price.update.whatsapp.wizard,model_price_update_whatsapp_wizard,base.group_user,1,1,1,1
+access_broker_release_qty_wizard,broker.release.qty.wizard,model_broker_release_qty_wizard,base.group_user,1,1,1,1

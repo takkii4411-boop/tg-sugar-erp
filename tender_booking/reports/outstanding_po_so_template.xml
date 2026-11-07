@@ -1,0 +1,152 @@
+<odoo>
+<template id="report_outstanding_po_so_template">
+    <t t-call="web.html_container">
+        <t t-set="ctx" t-value="env.context"/>
+
+        <div class="page">
+
+            <h2 style="text-align:center;">Purchase Orders With SO</h2>
+
+            <p style="text-align:center;">
+                <t t-if="ctx.get('date_from')">
+                    <t t-esc="ctx.get('date_from')"/>
+                </t>
+                <t t-if="ctx.get('date_from') and ctx.get('date_to')"> - </t>
+                <t t-if="ctx.get('date_to')">
+                    <t t-esc="ctx.get('date_to')"/>
+                </t>
+            </p>
+
+            <table style="width:100%; border-collapse:collapse; font-size:11px;" border="1">
+
+                <thead>
+                    <tr style="background:#eaeaea; text-align:center;">
+                        <th t-if="ctx.get('date_from') != ctx.get('date_to')">Date</th>
+                        <th>Order</th>
+                        <th>Vendor</th>
+                        <th>Item</th>
+
+                        <th>Ordered</th>
+                        <th style="background:#90EE90;">Total Balance</th>
+                        <th>Rate</th>
+
+                        <th>B SO Pending</th>
+                        <th>P SO Pending</th>
+                        <th>DO Pending</th>
+                        <th>Tender Bal</th>
+
+                        <th>Balance Payment</th>
+
+                        <th>B SO Amt</th>
+                        <th>DO Amt</th>
+                        <th>P SO Amt</th>
+
+                        <th style="background:#90EE90;">Total Pay</th>
+
+                        <th>Vendor A/c Bal</th>
+                        <th>Pay Date</th>
+                        <th>Lift Date</th>
+                    </tr>
+                </thead>
+
+                <t t-set="tot_ordered" t-value="0"/>
+                <t t-set="tot_balance" t-value="0"/>
+                <t t-set="tot_bso" t-value="0"/>
+                <t t-set="tot_pso" t-value="0"/>
+                <t t-set="tot_do" t-value="0"/>
+                <t t-set="tot_tender" t-value="0"/>
+                <t t-set="tot_bal_pay" t-value="0"/>
+                <t t-set="tot_b_amt" t-value="0"/>
+                <t t-set="tot_do_amt" t-value="0"/>
+                <t t-set="tot_p_amt" t-value="0"/>
+                <t t-set="tot_pay" t-value="0"/>
+
+                <tbody>
+                    <t t-foreach="docs" t-as="line">
+
+                        <t t-set="tot_ordered" t-value="tot_ordered + (line.ordered_qty or 0)"/>
+                        <t t-set="tot_balance" t-value="tot_balance + (line.total_balance or 0)"/>
+                        <t t-set="tot_bso" t-value="tot_bso + (line.b_so_pending or 0)"/>
+                        <t t-set="tot_pso" t-value="tot_pso + (line.p_so_pending or 0)"/>
+                        <t t-set="tot_do" t-value="tot_do + (line.do_pending or 0)"/>
+                        <t t-set="tot_tender" t-value="tot_tender + (line.tender_bal or 0)"/>
+                        <t t-set="tot_bal_pay" t-value="tot_bal_pay + (line.balance_payment or 0)"/>
+
+                        <t t-set="tot_b_amt" t-value="tot_b_amt + (line.b_so_amt or 0)"/>
+                        <t t-set="tot_do_amt" t-value="tot_do_amt + (line.do_amt or 0)"/>
+                        <t t-set="tot_p_amt" t-value="tot_p_amt + (line.p_so_amt or 0)"/>
+                        <t t-set="tot_pay" t-value="tot_pay + (line.total_pay or 0)"/>
+
+                        <tr style="text-align:center;">
+                            <td t-if="ctx.get('date_from') != ctx.get('date_to')">
+                                <t t-esc="line.date or ''"/>
+                            </td>
+                            <td><t t-esc="line.order_no"/></td>
+                            <td><t t-esc="line.vendor"/></td>
+                            <td><t t-esc="line.item_name"/></td>
+
+                            <td><t t-esc="int(line.ordered_qty)"/></td>
+                            <td style="background:#90EE90;">
+                                <t t-esc="int(line.total_balance)"/>
+                            </td>
+                            <td><t t-esc="line.rate"/></td>
+
+                            <td><t t-esc="int(line.b_so_pending)"/></td>
+                            <td><t t-esc="int(line.p_so_pending)"/></td>
+                            <td><t t-esc="int(line.do_pending)"/></td>
+                            <td><t t-esc="int(line.tender_bal)"/></td>
+
+                            <td><t t-esc="line.balance_payment"/></td>
+
+                            <td><t t-esc="line.b_so_amt"/></td>
+                            <td><t t-esc="line.do_amt"/></td>
+                            <td><t t-esc="line.p_so_amt"/></td>
+
+                            <td style="background:#90EE90;">
+                                <t t-esc="line.total_pay"/>
+                            </td>
+
+                            <td><t t-esc="round(line.vendor_ac_bal)"/></td>
+                            <td><t t-esc="line.pay_date"/></td>
+                            <td><t t-esc="line.lift_date"/></td>
+                        </tr>
+
+                    </t>
+                </tbody>
+
+                <tfoot>
+                    <tr style="font-weight:bold; text-align:center; background:#f2f2f2;">
+                        <td t-att-colspan="4 if ctx.get('date_from') != ctx.get('date_to') else 3">
+                            <b>Total</b>
+                        </td>
+
+                        <td><t t-esc="tot_ordered"/></td>
+                        <td style="background:#90EE90;"><t t-esc="tot_balance"/></td>
+                        <td></td>
+
+                        <td><t t-esc="tot_bso"/></td>
+                        <td><t t-esc="tot_pso"/></td>
+                        <td><t t-esc="tot_do"/></td>
+                        <td><t t-esc="tot_tender"/></td>
+
+                        <td><t t-esc="tot_bal_pay"/></td>
+
+                        <td><t t-esc="tot_b_amt"/></td>
+                        <td><t t-esc="tot_do_amt"/></td>
+                        <td><t t-esc="tot_p_amt"/></td>
+
+                        <td style="background:#90EE90;">
+                            <t t-esc="tot_pay"/>
+                        </td>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+
+            </table>
+        </div>
+    </t>
+</template>
+</odoo>

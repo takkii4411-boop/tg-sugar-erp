@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Party Sale Order',
+    'version': '19.0.1.0.0',
+    'category': 'Sales',
+    'author': 'HMRC Industry Private Limited',
+    'website': 'www.hmrcgroups.com',
+    'sequence': 3,
+    'license': 'LGPL-3',
+    'support': 'contact@hmrcgroups.com',
+    'summary': 'Party Sale Order menu for sale orders',
+    'description': """
+        Adds boolean fields in Sale Order.
+        Creates separate menus with domain filters.
+    """,
+    'depends': ['base', 'contacts', 'sale', 'sale_order_modifier_hmrc','stock','account'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/reference.xml',
+        'views/party_sale_order.xml',
+        'views/stock_picking_view.xml',
+        'views/account_move_view.xml',
+        'views/overdue_charge.xml',
+        'views/payment_term_view.xml',
+        'views/stock_move_view.xml',
+        'views/transport_master_view.xml',
+        'wizard/freight.xml',
+        'wizard/sales_report_wizard_view.xml',
+        'reports/delivery_report.xml',
+        'reports/custom_header.xml',
+        'reports/invoice_report.xml',
+        'reports/office_copy_report.xml',
+        'reports/report.xml',
+        'reports/template.xml',
+        'reports/sales_report_template.xml',
+        'views/menu.xml',
+    ],
+    'installable': True,
+    'application': True,
+}

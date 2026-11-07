@@ -1,0 +1,303 @@
+<odoo>
+    <data> 
+       <template id="report_delivery_pdf">
+            <t t-call="web.html_container">     
+                    <t t-call="party_sale_modifier_hmrc.external_layout_boxed_custom">   <main>
+                        <style>
+                            table { width: 100%; border-collapse: collapse; font-size: 12px; }
+                            td, th { border: 1px solid black; padding: 4px; vertical-align: top; }
+                            .no-border td { border: none; }
+                            .center { text-align: center; }
+                            .right { text-align: right; }
+                            .bold { font-weight: bold; }
+                            .big { font-size: 16px; }
+                            .red { color: red; }
+                        </style>
+                        <table>
+                            <tr>
+                                <td class="center bold big">Delivery Order</td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td width="60%">
+                                    <b>To</b><br/>
+                                    <!-- <b>Mill Details</b><br/> -->
+                                    <b><t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.name"/></b><br/>
+                                    <!-- <span class="bold"><b>Address Full :</b></span> -->
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.street"/>
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.street2"/><br/>
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.city"/>
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.zip"/><br/>
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.state_id.name"/>
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.country_id.name"/><br/>
+                                    <span class="bold"><b>Mob No :</b></span>
+                                    <t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.partner_id.phone"/>
+                                </td>
+                                <td width="40%">
+                                    <b>Date : </b><t t-esc="docs[0].scheduled_date"/><br/>
+                                    <b>DO No. : </b><t t-esc="docs[0].name"/><br/>
+                                    <b>Contract No. : </b><t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.contract_no"/><br/>
+                                    <b>Contract Date : </b><t t-esc="docs[0].sale_id.broker_allotment_id.tender_id.pay_date"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td width="50%">
+                                    <span class="bold"><b>Lorry No. : </b></span>
+                                    <span class="bold big">
+                                        <t t-esc="docs[0].vehicle_number"/>
+                                    </span><br/>
+                                    <b>Transport : </b>
+                                    <t t-esc="docs[0].transport_name.name"/>
+                                </td>
+                                <td width="50%">
+                                    <b>Driver Name : </b>
+                                    <t t-esc="docs[0].driver_id.name"/><br/>
+                                    <b>Mobile No. : </b>
+                                    <t t-esc="docs[0].driver_phone"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td width="50%">
+                                    <b>Bill To</b><br/>
+                                    <span class="bold"><b>Party Name :</b></span>
+                                    <t t-esc="docs[0].company_id.name"/><br/>
+                                    <span class="bold"><b>Address Full :</b></span>
+                                    <t t-esc="docs[0].company_id.street"/>
+                                    <t t-esc="docs[0].company_id.street2"/><br/>
+                                    <t t-esc="docs[0].company_id.city"/>
+                                    <t t-esc="docs[0].company_id.zip"/><br/>
+                                    <t t-esc="docs[0].company_id.state_id.name"/>
+                                    <t t-esc="docs[0].company_id.country_id.name"/><br/>
+                                    <span class="bold"><b>GSTIN :</b></span>
+                                    <t t-esc="docs[0].company_id.vat"/><br/>
+                                    <span class="bold"><b>PAN No :</b></span>
+                                    <t t-esc="docs[0].company_id.l10n_in_pan_entity_id.name or ''"/><br/>
+                                    <span class="bold"><b>Mob No :</b></span>
+                                    <t t-esc="docs[0].company_id.phone"/>
+                                    <span style="margin-left:5px;" class="bold"><b>Mail :</b></span>
+                                    <t t-esc="docs[0].company_id.email"/>
+                                </td>
+                                <td width="50%">
+                                    <b>Ship To</b><br/>
+                                    <span class="bold"><b>Party Name : </b></span>
+                                    <t t-esc="docs[0].partner_id.name"/><br/>
+                                    <span class="bold"><b>Address Full : </b></span>
+                                    <t t-esc="docs[0].partner_id.street"/>
+                                    <t t-esc="docs[0].partner_id.street2"/><br/>
+                                    <t t-esc="docs[0].partner_id.city"/>
+                                    <t t-esc="docs[0].partner_id.zip"/><br/>
+                                    <t t-esc="docs[0].partner_id.state_id.name"/><br/>
+                                    <span class="bold"><b>GSTIN : </b></span>
+                                    <t t-esc="docs[0].partner_id.vat"/><br/>
+                                    <span class="bold"><b>PAN No : </b></span>
+                                    <t t-esc="docs[0].partner_id.l10n_in_pan_entity_id.name or ''"/><br/>
+                                    <span class="bold"><b>Mob No : </b></span>
+                                    <t t-esc="docs[0].partner_id.phone"/>
+                                    <span style="margin-left:5px;" class="bold"><b>Mail : </b></span>
+                                    <t t-esc="docs[0].partner_id.email"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr class="bold center">
+                                <td>Description of Goods</td>
+                                <td>HSN</td>
+                                <td>QTY-QTL</td>
+                                <td>P Rate</td>
+                                <!-- <td>Inc. GST</td> -->
+                                <td>Amount</td>
+                            </tr>
+                            <t t-foreach="docs[0].move_ids" t-as="line">
+                                <tr>
+                                    <td>
+                                        <b class="big center">
+                                            <t t-esc="line.product_id.name"/>
+                                        </b>
+                                    </td>
+                                    <td class="center">
+                                        <t t-esc="line.product_id.l10n_in_hsn_code"/>
+                                    </td>
+                                    <td class="center">
+                                        <t t-esc="int(line.sale_line_id.qty_delivered)"/><br/>
+                                        <t t-set="po_line" t-value="docs[0].env['purchase.order.line'].search([
+                                            ('order_id', '=', docs[0].sale_id.broker_allotment_id.tender_id.id),
+                                            ('product_id', '=', line.product_id.id)
+                                        ], limit=1)"/>
+
+                                        <t t-if="po_line and po_line.cus_packing_id">
+
+                                            <t t-set="pack_name" t-value="po_line.cus_packing_id.name"/>
+
+                                            <t t-set="per_qt" t-value="po_line.cus_packing_id.per_qt_quantity or 0"/>
+
+                                            <t t-set="total_qty_kg" t-value="line.sale_line_id.qty_delivered"/>
+
+                                            <t t-set="total_qty_qt" t-value="total_qty_kg / 100"/>
+
+                                            <t t-if="per_qt and total_qty_qt">
+                                                <t t-set="bags" t-value="total_qty_qt*100 / per_qt"/>
+                                                <span style="font-size:10px;">
+                                                    <t t-esc="int(bags)"/> <t t-esc="pack_name"/>
+                                                </span>
+                                            </t>
+
+                                            <t t-if="not per_qt">
+                                                <span style="font-size:10px;">
+                                                    <t t-esc="int(total_qty_kg)"/> <t t-esc="pack_name"/>
+                                                </span>
+                                            </t>
+
+                                        </t>
+
+                                    </td>
+                                    <td class="center">
+                                        <t t-esc="line.picking_id.sale_id.po_rate"/>
+                                    </td>
+                                    <!-- <td class="center">
+                                        <t t-esc="line.sale_line_id.tax_ids.name"/>
+                                    </td>
+ -->                                    <td class="center">
+                                        <t t-esc="line.sale_line_id.price_subtotal"/>
+                                    </td>    
+                                </tr>
+                            </t>
+                        </table>
+                        <table>
+                            
+                            <tr>
+                                <td colspan="3" style="border:1px solid #000;">
+                                    <span class="bold big"><b>Payment Details : </b></span>
+                                    <span class="bold big">
+                                        <t t-esc="docs[0].sale_id.payment_term_id.name"/>
+                                    </span><br/>
+                                </td>
+                                <td colspan="3" style="border:1px solid #000; padding:0;">
+                                    <table style="width:100%; border-collapse:collapse;">
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>Sub Total</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;"><t t-esc="docs[0].sale_id.amount_untaxed"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>C-GST</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;">
+                                                <t t-esc="
+                                                 sum(
+                                                   tg['tax_amount']
+                                                   for st in docs[0].sale_id.tax_totals['subtotals']
+                                                   for tg in st['tax_groups']
+                                                   if tg['group_name'] == 'CGST'
+                                                 )
+                                                "/>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>S-GST</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;">
+                                                <t t-esc="
+                                                 sum(
+                                                   tg['tax_amount']
+                                                   for st in docs[0].sale_id.tax_totals['subtotals']
+                                                   for tg in st['tax_groups']
+                                                   if tg['group_name'] == 'SGST/UTGST'
+                                                 )
+                                                "/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>I-GST</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;">
+                                                <t t-esc="
+                                                 sum(
+                                                   tg['tax_amount']
+                                                   for st in docs[0].sale_id.tax_totals['subtotals']
+                                                   for tg in st['tax_groups']
+                                                   if tg['group_name'] == 'IGST'
+                                                 )
+                                                "/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>Less TDS</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;">
+    
+                                                <t t-set="amount"
+                                                   t-value="docs[0].sale_id.invoice_ids[:1].amount_untaxed"/>
+
+                                                <t t-set="less_tds"
+                                                   t-value="amount * 0.001"/>
+
+                                                <t t-esc="less_tds"/>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>Rounding Off</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;">
+
+                                            <t t-set="actual_total" t-value="docs[0].sale_id.amount_total"/>
+                                            <t t-set="rounded_total" t-value="round(actual_total)"/>
+                                            <t t-set="rounding_diff" t-value="rounded_total - actual_total"/>
+
+                                            <t t-esc="('+' if rounding_diff > 0 else '') + ('%.2f' % rounding_diff)"/>
+
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td colspan="2" style="border:1px solid #000; font-weight:bold;">
+                                                <b>Net Amount</b>
+                                            </td>
+                                            <td style="border:1px solid #000; font-weight:bold;"><t t-esc="docs[0].sale_id.amount_total"/></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="no-border">
+                            <tr>
+                                <td width="70%">
+                                    <b>Note : </b><t t-esc="docs[0].note"/>
+                                </td>
+                                <td width="30%" class="right">
+                                    <b>Prepared by: </b><t t-esc="docs[0].user_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <b>For Any Queries Please Call or WhatsApp M.No. 7875555174</b>
+                                </td>
+                            </tr>
+                        </table>
+                    </main>
+                </t>
+            </t>
+        </template>
+
+        <record id="action_report_delivery" model="ir.actions.report">
+            <field name="name">Mill Delivery Order</field>
+            <field name="model">stock.picking</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">party_sale_modifier_hmrc.report_delivery_pdf</field>
+            <field name="report_file">party_sale_modifier_hmrc.report_delivery_pdf</field>
+            <field name="print_report_name">'Delivery Order - %s' % (object.name)</field>
+        </record>
+    </data>
+</odoo>

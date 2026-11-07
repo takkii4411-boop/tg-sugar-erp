@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_send_price_update_whatsapp" model="ir.actions.server">
+        <field name="name">Send Price Update WhatsApp</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+                action = {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Price Update WhatsApp',
+                    'res_model': 'price.update.whatsapp.wizard',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'context': {
+                        'default_partner_ids': records.ids
+                    }
+                }
+        </field>
+    </record>
+
+</odoo>

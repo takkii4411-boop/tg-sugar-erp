@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_outstanding_po_so" model="ir.actions.report">
+        <field name="name">Outstanding PO SO</field>
+        <field name="model">outstanding.po.so.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">tender_booking.report_outstanding_po_so_template</field>
+        <field name="report_file">tender_booking.report_outstanding_po_so_template</field>
+        <field name="print_report_name">('Outstanding PO SO - %s' % (object.id))</field>
+    </record>
+</odoo>

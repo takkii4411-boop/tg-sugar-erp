@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="tally_configuration_form">
+            <field name="name">Configuration</field>
+            <field name="model">tally.configuration</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Tally Configuration">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"  invisible="active"/>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                            <field name="active" invisible="1"/>
+                        </div>
+                        <group>
+                            <group string="Ledger Configuration">
+                                <field name="tally_journal_ledger"/>
+                                <field name="tally_category_ledger"/>
+                                <field name="tally_tax_ledger"/>
+                            </group>
+                            <group string="GSTOVRDNNATURE">
+                                <field name="gstovrdnnature_local"/>
+                                <field name="gstovrdnnature_interstate"/>
+                                <field name="gstovrdnnature_overseas"/>
+                            </group>
+                            <group string="Other Configuration">
+                                <field name="ledger_by" widget="radio"/>
+                                <field name="bill_allocation"/>
+                                <field name="field_mapping_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tally_configuration_list">
+            <field name="name">Tally Configuration list</field>
+            <field name="model">tally.configuration</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Tally Configuration">     
+                    <field name="name" />
+                    <field name="ledger_by" />
+                    <field name="bill_allocation" />
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="tally_configuration_action">
+            <field name="name">Tally Configuration</field>
+            <field name="res_model">tally.configuration</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="tally_configuration_list" />
+        </record>
+
+        <menuitem id="account_tally_configuration" name="Tally" parent="account.menu_finance_configuration" sequence="2"/>
+        <menuitem id="tally_configuration_menu"  name="Configuration" parent="account_tally_configuration" action="tally_configuration_action" sequence="2"/>
+
+    </data>
+</odoo>

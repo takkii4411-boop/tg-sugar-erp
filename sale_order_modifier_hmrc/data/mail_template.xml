@@ -1,0 +1,44 @@
+<odoo>
+    <record id="email_template_invoice_overdue" model="mail.template">
+        <field name="name">Customer Invoice Overdue Reminder</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="subject">Payment Reminder for Invoice ${object.name}</field>
+        <field name="email_from">${(user.email)}</field>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="body_html">
+            <![CDATA[
+            <p>Dear ${object.partner_id.name},</p>
+
+            <p>Your invoice <b>${object.name}</b> amounting to 
+            <b>₹${object.amount_total}</b> was due on 
+            <b>${object.invoice_date_due}</b>.</p>
+
+            <p>Kindly make the payment at the earliest.</p>
+
+            <p>Regards,<br/>TG Sugar Company</p>
+            ]]>
+        </field>
+    </record>
+
+    <record id="email_template_admin_overdue" model="mail.template">
+        <field name="name">Admin Invoice Overdue Reminder</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="subject">Overdue Invoice Alert - ${object.name}</field>
+        <field name="email_from">${(user.email)}</field>
+        <field name="email_to">${(user.email)}</field>
+        <field name="body_html">
+            <![CDATA[
+            <p>Dear Admin,</p>
+
+            <p>Invoice <b>${object.name}</b> of customer 
+            <b>${object.partner_id.name}</b> is overdue.</p>
+
+            <p>Due Date: ${object.invoice_date_due}</p>
+            <p>Amount: ₹${object.amount_total}</p>
+
+            <p>Please follow up.</p>
+            ]]>
+        </field>
+    </record>
+
+</odoo>

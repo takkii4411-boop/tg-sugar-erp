@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <menuitem id="menu_tender_root"
+              name="Tender" web_icon="tender_booking,static/description/auction.png"
+              action="action_tender_booking"/>
+    
+    <menuitem id="report_menu_root"
+              name="Reports"
+              parent="menu_tender_root"
+              sequence="1"/>
+    
+    <menuitem id="menu_outstanding_balance_submenu"
+              name="Outstanding Tender View"
+              parent="report_menu_root"
+              action="action_tender_balance_report_wizard"
+              sequence="40"/>
+
+    <menuitem id="menu_outstanding_po_so"
+              name="Outstanding PO SO"
+              parent="report_menu_root"  
+              action="action_outstanding_po_so_wizard"
+              sequence="50"/>
+
+    <menuitem id="menu_po_lot"
+              name="PO Lot Report"
+              parent="report_menu_root"
+              action="action_po_lot_wizard"
+              sequence="60"/>
+
+    <menuitem id="menu_purchase_report"
+          name="Purchase Register Report"
+          parent="report_menu_root"
+          action="action_purchase_report_wizard"
+          sequence="70"/>
+
+    <menuitem id="menu_tender_allotment_tree" name="Tender Pending List" parent="report_menu_root" action="action_tender_allotment_tree_view" sequence="10"/>
+
+    <menuitem id="menu_tender_party_pending_list" name="Party Pending List" parent="report_menu_root" action="party_sale_modifier_hmrc.action_party_allotment_tree_view" sequence="30"/>
+        
+    <menuitem id="menu_tender_broker_pending_list" name="Broker Pending List" parent="report_menu_root" action="sale_order_modifier_hmrc.action_broker_allotment_list_view" sequence="20"/>
+    
+     
+    <menuitem id="menu_tender_booking_submenu"
+              name="Tender Booking"
+              parent="menu_tender_root"
+              action="action_tender_booking"
+              sequence="10"/>
+    
+    
+    <record id="action_tender_vendor" model="ir.actions.act_window">
+        <field name="name">Vendors</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('supplier_rank', '>', 0)]</field>
+        <field name="context">{'default_supplier_rank': 1}</field>
+    </record>
+    
+    <menuitem id="menu_vendor_parent"
+              name="Vendor"
+              parent="menu_tender_root"
+              sequence="20"/>
+    
+    <menuitem id="menu_vendor_submenu"
+              name="Vendor"
+              parent="menu_vendor_parent"
+              action="action_tender_vendor"
+              sequence="10"/>
+    
+    <record id="action_tender_items" model="ir.actions.act_window">
+        <field name="name">Items</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('purchase_ok', '=', True)]</field>
+        <field name="context">{'default_purchase_ok': True}</field>
+    </record>
+    
+    <record id="action_tender_variants" model="ir.actions.act_window">
+        <field name="name">Variants</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('purchase_ok', '=', True)]</field>
+        <field name="context">{'default_purchase_ok': True}</field>
+    </record>
+    
+    <menuitem id="menu_item_submenu"
+              name="Item"
+              parent="menu_tender_root"
+              sequence="30"/>
+    
+    <menuitem id="menu_tender_items"
+              name="Items"
+              parent="menu_item_submenu"
+              action="action_tender_items"
+              sequence="10"/>
+    
+    <menuitem id="menu_tender_variants"
+              name="Variants"
+              parent="menu_item_submenu"
+              action="action_tender_variants"
+              sequence="20"/>
+
+    
+    <record id="action_tender_uom" model="ir.actions.act_window">
+        <field name="name">Units and Packagings</field>
+        <field name="res_model">uom.uom</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+    </record>
+    
+    <menuitem id="menu_tender_uom"
+              name="Units and Packagings"
+              parent="menu_item_submenu"
+              action="action_tender_uom"
+              sequence="30"/>
+    
+    <menuitem id="menu_item_inventory"
+              name="Inventory Update"
+              parent="menu_tender_root"
+              sequence="40"/>
+
+    <menuitem id="menu_tender_booked_inventory"
+              name="Booked Inventory"
+              parent="menu_item_inventory"
+              action="action_tender_booked_inventory"
+              sequence="10"/>
+    
+    <menuitem id="menu_tender_confirm_inventory"
+              name="Confirmed Inventory"
+              parent="menu_item_inventory"
+              action="action_tender_confirm_inventory"
+              sequence="20"/>
+</odoo>

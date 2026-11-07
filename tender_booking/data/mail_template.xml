@@ -1,0 +1,23 @@
+<odoo>
+    <record id="email_template_broker_allotment" model="mail.template">
+        <field name="name">Broker Allotment Notification</field>
+        <field name="email_from">${(user.email_formatted or '')}</field>
+        <field name="subject">Broker Allotment Created - ${object.name}</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+
+        <field name="body_html">
+            <![CDATA[
+                <p>Hello,</p>
+                <p>A new broker allotment has been created.</p>
+
+                <p><strong>Sale Order:</strong> ${object.name}</p>
+                <p><strong>Tender:</strong> ${object.tender_id.name}</p>
+                <p><strong>Broker:</strong> ${object.partner_id.name}</p>
+                <p><strong>Pay Date:</strong> ${object.pay}</p>
+                <p><strong>Lift Date:</strong> ${object.lift}</p>
+
+                <p>Thank You.</p>
+            ]]>
+        </field>
+    </record>
+</odoo>

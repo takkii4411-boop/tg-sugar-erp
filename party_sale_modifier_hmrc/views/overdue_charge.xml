@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_overdue_charge_tree" model="ir.ui.view">
+            <field name="name">overdue.charge.tree</field>
+            <field name="model">overdue.charge</field>
+            <field name="arch" type="xml">
+                <list>
+                    <!-- <field name="partner_id" width="200"/> -->
+                    <field name="name" width="200"/>
+                    <!-- <field name="day" width="80"/> -->
+                    <!-- <field name="from_day" width="70"/> -->
+                    <!-- <field name="to_day" width="70"/> -->
+                    <!-- <field name="charge_per_quintal" width="120"/> -->
+                </list>
+            </field>
+        </record>
+        <record id="view_overdue_charge_line_tree" model="ir.ui.view">
+            <field name="name">overdue.charge.line.tree</field>
+            <field name="model">overdue.charge.line</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="delay_day"/>
+                    <!-- <field name="delay_charge"/> -->
+                    <field name="charge_1"/>
+                    <field name="charge_2"/>
+                    <field name="charge_3"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_overdue_charge_form" model="ir.ui.view">
+            <field name="name">overdue.charge.form</field>
+            <field name="model">overdue.charge</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <!-- <field name="partner_id" required="1"/> -->
+                            <field name="name" required="1"/>
+                            <!-- <field name="day" required="1"/> -->
+                        </group>
+                        <!--                             <group>
+                            <field name="from_day" required="1"/>
+                            <field name="to_day" required="1"/>
+                             <field name="charge_per_quintal" required="1"/>
+                        </group> -->
+                        <notebook>
+                            <page string="Delay Charges">
+                                <field name="line_ids">
+                                    <list editable="bottom">
+                                        <field name="delay_day" required='1'/>
+                                        <field name="delay_charge" required='1'/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_overdue_charge_search" model="ir.ui.view">
+            <field name="name">overdue.charge.search</field>
+            <field name="model">overdue.charge</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!-- <field name="partner_id"/> -->
+                    <field name="name"/>
+                    <!-- <field name="day"/> -->
+
+                    <!-- <filter string="Party Wise"
+                            name="group_by_partner"
+                            context="{'group_by':'partner_id'}"/> -->
+
+                    <!-- <filter string="Party Slab"
+                            name="party_slab"
+                            domain="[('partner_id','!=',False)]"/> -->
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="overdue_charge_action_window">
+            <field name="name">Daywise Credit Charge</field>
+            <field name="res_model">overdue.charge</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

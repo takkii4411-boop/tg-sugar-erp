@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+
+    <record id="view_broker_allotment_form" model="ir.ui.view">
+        <field name="name">view.broker.allotment.form</field>
+        <field name="model">broker.allotment</field>
+        <field name="arch" type="xml">
+            <form string="Broker Allotment" create="0" copy="0" delete="0">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button string="Cancel" name="action_cancel" type="object" invisible="state not in ['draft']"/>
+                    <button name="action_open_party_wizard" string="Create Party Allotment" type="object" invisible="state != 'confirm'" class="btn-primary" groups="tender_booking.group_create_broker_allotment"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    <button name="action_open_release_qty_wizard" type="object" string="Release Qty" class="btn-primary" invisible="state != 'confirm'" groups="tender_booking.group_return_do_access"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="open_tender" class="oe_stat_button" icon="fa-balance-scale" invisible="not tender_id">
+                            Tender
+                        </button>
+                        <button type="object" name="open_party_allotment" class="oe_stat_button" icon="fa-balance-scale" invisible="party_allotment_count == 0">
+                            <field name="party_allotment_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="voucher_date"/>
+                            <field name="pay" readonly="state == 'confirm'"/>
+                            <field name="lift" readonly="state == 'confirm'"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" widget="res_partner_many2one" readonly="state == 'confirm'"/>
+                            <field name="tender_id" readonly="1"/>
+                            <field name="date_order" readonly="state == 'confirm'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines" name="order_lines">
+                            <field name="order_line" readonly="state == 'confirm'">
+                                <list create="0" delete="0" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_template_id" string="Product"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="balance_qty" readonly="1"/>
+                                    <field name="party_qty" readonly="1"/>
+                                    <field name="price_unit"/>
+                                    <field name="qty_delivered" optional="hide"/>
+                                    <field name="tax_ids" widget="many2many_tax_tags" options="{'no_create': True}" optional="show"/>
+                                    <field name="price_subtotal" />
+                                    <field name="price_total" />
+                                </list>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group colspan="4" class="order-1 order-lg-0">
+                                    <field colspan="2" name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                                </group>
+                                <group class="oe_subtotal_footer d-flex order-0 order-lg-1 flex-column gap-0 gap-sm-3" colspan="2" name="sale_total">
+                                    <group>
+                                        <field name="amount_untaxed" readonly="1"/>
+                                        <field name="amount_tax" readonly="1"/>
+                                        <field name="amount_total" readonly="1"/>
+                                        <button name="action_confirm" string="Confirm" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                                    </group>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="note" string="Notes">
+                            <group>
+                                <label for="note" string="Notes"/>
+                                <field name="note" placeholder="Describe Notes" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_broker_allotment_list" model="ir.ui.view">
+        <field name="name">view.broker.allotment.list</field>
+        <field name="model">broker.allotment</field>
+        <field name="arch" type="xml">
+            <list create="0" decoration-muted="state == 'cancel'" delete="0">
+                <field name="date_order" string="Order Date" readonly="state in ['cancel', 'confirm']" widget="date"/>
+                <field name="tender_id" string="Tendor No"/>
+                 <field name="vendor_id"/>
+                <field name="first_product" width="150" optional="show"/>
+                <field name="name" string="Brk Allot No" readonly="1" decoration-bf="1" optional="show"/>
+                <field name="partner_id" string="Broker" readonly="1" optional="show"/>
+                <field name="total_qty" string="Brk Qty" widget="integer" decoration-info="total_qty" optional="show"/>
+                <field name="bal_qty" string="Bal Qty" widget="integer" decoration-success="bal_qty" optional="show"/>
+                <field name="balance_total" widget="integer" optional="show"/>
+                <field name="total_rate" string="Brk Rate" optional="show"/>
+                <field name="tender_rate" optional="show"/>
+		        <!-- <field name="diff_rate" optional="show"/> -->
+                <field name="amount_tax" string="GST Amount" optional="show"/>
+                <field name="pay" string="Pay Date" optional="hide" widget="date"/>
+                <field name="lift" optional="hide" widget="date"/>
+                <field name="amount_tax" sum="Tax Total" widget="monetary" optional="hide"/>
+                <field name="amount_total" sum="Total Tax Included" widget="integer" optional="show"/>
+                <field name="state" decoration-success="state == 'confirm'" decoration-info="state == 'draft'" widget="badge" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_broker_allotment_kanban" model="ir.ui.view">
+        <field name="name">view.broker.allotment.kanban</field>
+        <field name="model">broker.allotment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" quick_create="false">
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex align-items-baseline mb-2">
+                            <field name="partner_id" class="fw-bolder fs-5 me-2"/>
+                            <field name="amount_total" widget="monetary" class="fw-bolder ms-auto flex-shrink-0"/>
+                        </div>
+                        <footer class="align-items-end">
+                            <div class="d-flex flex-wrap gap-1 text-muted text-nowrap">
+                                <field name="name"/>
+                                <field name="date_order"/>
+                            </div>
+                            <field name="state"
+                                widget="label_selection"
+                                options="{'classes': {'draft': 'info', 'cancel': 'default', 'confirm': 'success'}}" class="ms-auto"/>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_broker_allotment_search" model="ir.ui.view">
+        <field name="name">view.broker.allotment.search</field>
+        <field name="model">broker.allotment</field>
+        <field name="arch" type="xml">
+            <search string="Broker Allotment">
+                <field name="name"/>
+                <filter string="Order Date" name="groupby_date_order" context="{'group_by': 'date_order'}"/>
+                <filter string="Tender No" name="groupby_tender" context="{'group_by': 'tender_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_broker_report_tree" model="ir.ui.view">
+        <field name="name">broker.report.tree</field>
+        <field name="model">broker.allotment</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0">
+                <field name="date_order" string="Date"/>
+                <field name="tender_id" string="Tendor No"/>
+                <field name="name" string="Brk Allot No" decoration-bf="1"/>
+                <field name="partner_id" string="Broker" readonly="1"/>
+                <field name="pay" string="Pay Date" optional="show"/>
+                <field name="lift" optional="show"/>
+                <field name="first_product" string="Items" width="150" optional="show"/>
+                <field name="total_qty" string="Brk Qty" sum="Total Qty" widget="integer" optional="show"/>
+                <field name="delivery" widget="integer" optional="show"/>
+                <field name="bal_qty" sum="Total Balance Qty" widget="integer" optional="show"/>
+                <field name="prt_qty" sum="Total Party Qty" widget="integer" optional="show"/>
+                <field name="total_rate" string="Brk Rate" optional="show"/>
+                <field name="tender_rate" string="Tender Rate" optional="show"/>
+                <field name="state" decoration-success="state == 'confirm'" decoration-info="state == 'draft'" widget="badge" optional="show"/>
+                <field name="amount_total" string="Total Amount" widget="monetary" sum="Total" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_l10n_in_withhold_wizard_inherit_auto_section" model="ir.ui.view">
+        <field name="name">l10n.in.withhold.wizard.auto.section</field>
+        <field name="model">l10n_in.withhold.wizard</field>
+        <field name="inherit_id" ref="l10n_in.tds_entry_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//label[@for='tax_id']" position="before">
+                <field name="auto_select_section"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="broker_allotment_search_inherit_balance" model="ir.ui.view">
+        <field name="name">broker.allotment.search.balance.filter</field>
+        <field name="model">broker.allotment</field>
+        <field name="inherit_id" ref="sale_order_modifier_hmrc.view_broker_allotment_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[last()]" position="after">
+                <filter name="balance_qty_available"
+                    string="Balance Qty > 0"
+                    domain="[('bal_qty','>',0)]"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="sale_order_modifier_hmrc.action_broker_allotment" model="ir.actions.act_window">
+        <field name="search_view_id" ref="sale_order_modifier_hmrc.view_broker_allotment_search"/>
+        <field name="context" eval="{
+                'default_is_sale_order_modifier_hmrc': True,
+                'search_default_balance_qty_available': 1
+            }"/>
+    </record>
+
+    
+    <record id="action_broker_allotment" model="ir.actions.act_window">
+        <field name="name">Broker Allotment</field>
+        <field name="res_model">broker.allotment</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="sale_order_modifier_hmrc.view_broker_allotment_list"/>
+        <!-- <field name="context">{}</field> -->
+        <field name="context" eval="{
+            'search_default_balance_qty_available': 1
+        }"/>
+
+        <field name="domain">[]</field>
+    </record>
+    
+</odoo>

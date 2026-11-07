@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_broker_allotment_portal,Broker Allotment Portal,sale_order_modifier_hmrc.model_broker_allotment,base.group_portal,1,0,0,0
+access_broker_allotment_line_portal,Broker Allotment Line Portal,sale_order_modifier_hmrc.model_broker_allotment_line,base.group_portal,1,0,0,0
+access_broker_allotment_user,Broker Allotment User,sale_order_modifier_hmrc.model_broker_allotment,base.group_user,1,1,1,1
+access_broker_allotment_line_user,Broker Allotment Line User,sale_order_modifier_hmrc.model_broker_allotment_line,base.group_user,1,1,1,1
+access_sale_order_portal,Sale Order Portal,sale.model_sale_order,base.group_portal,1,0,1,0
+access_sale_order_line_portal,Sale Order Line Portal,sale.model_sale_order_line,base.group_portal,1,0,1,0
+access_res_partner_portal_party,Res Partner Portal Party,base.model_res_partner,base.group_portal,1,0,0,0
+access_product_product_portal,Product Product Portal,product.model_product_product,base.group_portal,1,0,0,0
+access_uom_uom_portal,UoM Portal,uom.model_uom_uom,base.group_portal,1,0,0,0

@@ -1,0 +1,129 @@
+<odoo>
+   <record id="purchase_report_action" model="ir.actions.report">
+        <field name="name">Purchase Register Report</field>
+        <field name="model">purchase.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">tender_booking.purchase_report_template</field>
+        <field name="print_report_name">'Purchase Register Report'</field>
+    </record>
+
+    <template id="purchase_report_template">
+        <t t-call="web.basic_layout">
+            <t t-set="ctx" t-value="env.context"/>
+
+            <h3 style="text-align:center;">TG Sugars LTD</h3>
+            <h4 style="text-align:center;">Purchase Report</h4>
+            <t t-if="ctx.get('from_date') or ctx.get('to_date')">
+                <p style="text-align:center;">
+                    <t t-if="ctx.get('from_date')">
+                        <t t-esc="ctx.get('from_date')"/>
+                    </t>
+                    <t t-if="ctx.get('from_date') and ctx.get('to_date')">
+                        To
+                    </t>
+                    <t t-if="ctx.get('to_date')">
+                        <t t-esc="ctx.get('to_date')"/>
+                    </t>
+                </p>
+            </t>
+            <!-- <p style="text-align:center;">
+                <t t-esc="from_date"/> - <t t-esc="to_date"/>
+            </p> -->
+
+            <table class="table table-bordered" style="font-size:13px;">
+                <thead style="background:#f0f0f0;">
+                    <tr>
+                        <th t-if="ctx.get('from_date') != ctx.get('to_date')"> <b>Date</b></th>
+                        <th><b><strong>Vou No</strong></b></th>
+                        <th><b><strong>V. Bill No</strong></b></th>
+                        <th><b><strong>Vendor Name</strong></b></th>
+                        <th><b><strong>PO Number</strong></b></th>
+                        <th style="width:20px;"><b><strong>Item Name</strong></b></th>
+                        <th><b><strong>Qty (QTL)</strong></b></th>
+                        <th><b><strong>Pur Rate</strong></b></th>
+                        <th><b><strong>Value</strong></b></th>
+                        <th><b><strong>CGST Amt</strong></b></th>
+                        <th><b><strong>SGST Amt</strong></b></th>
+                        <th><b><strong>IGST Amt</strong></b></th>
+                        <th><b><strong>Total</strong></b></th>
+                        <th><b><strong>Tds Amt</strong></b></th>
+                        <th><b><strong>Net Amt</strong></b></th>
+                        <th><b><strong>Vehicle No</strong></b></th>
+                    </tr>
+                </thead>
+
+                <t t-set="total_qty" t-value="0"/>
+                    <t t-set="total_value" t-value="0"/>
+                    <t t-set="total_cgst" t-value="0"/>
+                    <t t-set="total_sgst" t-value="0"/>
+                    <t t-set="total_igst" t-value="0"/>
+                    <t t-set="total_total" t-value="0"/>
+                    <t t-set="total_tds" t-value="0"/>
+                    <t t-set="total_net" t-value="0"/>
+
+                    <tbody>
+
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-foreach="doc.line_ids" t-as="l">
+
+                                <t t-set="total_qty" t-value="total_qty + l.qty"/>
+                                <t t-set="total_value" t-value="total_value + l.value"/>
+                                <t t-set="total_cgst" t-value="total_cgst + l.cgst"/>
+                                <t t-set="total_sgst" t-value="total_sgst + l.sgst"/>
+                                <t t-set="total_igst" t-value="total_igst + l.igst"/>
+                                <t t-set="total_total" t-value="total_total + l.total"/>
+                                <t t-set="total_tds" t-value="total_tds + l.tds_amt"/>
+                                <t t-set="total_net" t-value="total_net + l.net_amt"/>
+
+                                <tr>
+                                    <td t-if="ctx.get('from_date') != ctx.get('to_date')">
+                                        <t t-esc="l.date or ''"/>
+                                    </td>
+
+                                    <td><t t-esc="l.vou_no"/></td>
+                                    <td><t t-esc="l.bill_no"/></td>
+                                    <td><t t-esc="l.vendor_name"/></td>
+                                    <td><t t-esc="l.po_number"/></td>
+                                    <td><t t-esc="l.product_id.display_name"/></td>
+                                    <td class="text-end"><t t-esc="int(l.qty)"/></td>
+                                    <td class="text-end"><t t-esc="l.pur_rate"/></td>
+                                    <td class="text-end"><t t-esc="int(l.value)"/></td>
+                                    <td class="text-end"><t t-esc="int(l.cgst)"/></td>
+                                    <td class="text-end"><t t-esc="int(l.sgst)"/></td>
+                                    <td class="text-end"><t t-esc="int(l.igst)"/></td>
+                                    <td class="text-end"><t t-esc="int(l.total)"/></td>
+                                    <td class="text-end"><t t-esc="l.tds_amt"/></td>
+                                    <td class="text-end"><t t-esc="int(l.net_amt)"/></td>
+                                    <td><t t-esc="l.vehicle_no"/></td>
+                                </tr>
+
+                            </t>
+                        </t>
+                    </tbody>
+
+                    <tfoot>
+                        <tr style="font-weight:bold; background:#f0f0f0;">
+                            <td t-att-colspan="6 if ctx.get('from_date') != ctx.get('to_date') else 5">
+                                <b>Total</b>
+                            </td>
+
+                            <td><t t-esc="round(total_qty)"/></td>
+                            <td></td>
+                            <td><t t-esc="round(total_value)"/></td>
+                            <td><t t-esc="total_cgst"/></td>
+                            <td><t t-esc="total_sgst"/></td>
+                            <td><t t-esc="total_igst"/></td>
+                            <td><t t-esc="round(total_total)"/></td>
+                            <td><t t-esc="total_tds"/></td>
+                            <td><t t-esc="round(total_net)"/></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+            </table>
+
+        </t>
+    </template>
+</odoo>
+
+
+ 

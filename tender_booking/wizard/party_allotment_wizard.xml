@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="party_allotment_wizard_form" model="ir.ui.view">
+            <field name="name">party.allotment.wizard.form</field>
+            <field name="model">party.allotment.wizard</field>
+            <field name="arch" type="xml"> 
+                <form string="Party Allotment">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="tender_id" readonly="1"/>
+                                <field name="broker_allotment_id" readonly="1"/>
+                                <field name="broker_id" required="1"
+                                    options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="pay_date"/>
+                                <field name="lift_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Item Details">
+                                <field name="line_ids">
+                                    <list editable="bottom" create="0" delete="0" Open="0">
+                                        <field name="broker_allotment_line_id" force_save="1" readonly="1" optional='hide'/>
+                                        <field name="product_id" force_save="1" readonly="1"/>
+                                        <field name="op_qty" force_save="1" readonly="1" widget="integer"/>
+                                        <field name="balance_qty" force_save="1" readonly="1" widget="integer"/>
+                                        <field name="current_allot_brk_qty" force_save="1" readonly="0" widget="integer"/>
+                                        <field name="price_unit" force_save="1" readonly="1" optional='hide'/>
+                                        <field name="broker_price" force_save="1"/>
+                                        <field name="product_uom_id" force_save="1" readonly="1"/>
+                                        <!-- <field name="tax_ids" force_save="1" readonly="1"/> -->
+                                        <!-- <field name="price_subtotal" force_save="1" readonly="1"/> -->
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <footer>
+                        <button string="Create" type="object" name="action_create_allotment" class="btn-primary"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

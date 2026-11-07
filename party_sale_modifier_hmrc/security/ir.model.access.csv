@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_freight_charge_line,freight.charge.line,model_freight_charge_line,base.group_user,1,1,1,1
+access_overdue_charge,overdue.charge,model_overdue_charge,base.group_user,1,1,1,1
+access_overdue_charge_line,overdue.charge.line,model_overdue_charge_line,base.group_user,1,1,1,1
+access_invoice_delay_charge,invoice.delay.charge,model_invoice_delay_charge,base.group_user,1,1,1,1
+access_sales_report_wizard,sales.report.wizard,model_sales_report_wizard,base.group_user,1,1,1,1
+access_sales_report_wizard_line,sales.report.wizard.line,model_sales_report_wizard_line,base.group_user,1,1,1,1
+access_transport_master,transport.master,model_transport_master,,1,1,1,1

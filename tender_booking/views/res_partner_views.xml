@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="view_partner_property_form_inherit_tender" model="ir.ui.view">
+            <field name="name">res.partner.property.form.inherit.tender</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_stock_supplier']" position="after">
+                    <field name="received_location_id" string="Received Location"/> 
+                </xpath>
+                <xpath expr="//field[@name='property_stock_supplier']" position="attributes">
+                    <attribute name="string">Dispatch From </attribute> 
+                </xpath>
+            </field>
+        </record>
+        
+    	<record id="view_res_partner_form_party_checkbox" model="ir.ui.view">
+    	    <field name="name">res.partner.form.party.checkbox</field>
+    	    <field name="model">res.partner</field>
+    	    <field name="inherit_id" ref="base.view_partner_form"/>
+    	    <field name="arch" type="xml">
+    		
+    		<xpath expr="//page[@name='sales_purchases']//group[@name='purchase']" position="inside">
+    		    <field name="is_party_customer"/>
+    		</xpath>
+
+    	    </field>
+    	</record>
+
+    </data>
+</odoo>

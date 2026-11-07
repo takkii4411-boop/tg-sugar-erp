@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_res_partner_form_portal_broker" model="ir.ui.view">
+            <field name="name">res.partner.portal.broker.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_broker_partner']" position="after">
+                    <button name="action_create_portal_user" type="object"
+                            string="Create Portal User" class="oe_highlight"
+                            invisible="not is_broker_partner"
+                            help="Create a portal user for this broker"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

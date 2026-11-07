@@ -1,0 +1,283 @@
+<odoo>
+    <data>
+        <record id="view_sale_order_form_party" model="ir.ui.view">
+            <field name="name">sale.order.party.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" required="1"/>
+                </xpath>
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="copy">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+                <!-- <xpath expr="//div[@class='oe_button_box']" position="inside">
+                    <button type="object" name="action_view_charge_lines" class="oe_stat_button" icon="fa-money">
+                        Charges List
+                    </button>
+                </xpath> -->
+
+                <!-- <xpath expr="//button[@name='button_cancel']" position="attributes">
+                    <attribute name="invisible">state == 'sale'</attribute>
+                </xpath> -->
+
+<!--                 <xpath expr="//header" position="inside">
+                    <button name="action_add_freight" string="Add Freight Charge" type="object" class="oe_highlight" invisible="rate_type != 'for' or freight_added == True"/>
+                </xpath> -->
+                <!-- <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="string">Credit Days</attribute>
+                </xpath> -->
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="broker_id" readonly="1" invisible="not is_party_sale"/>
+                    <field name="broker_allotment_id" readonly="1" invisible="not is_party_sale"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="voucher_date"/>
+                    <field name="rate_type" invisible="not is_party_sale"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="is_party_sale" invisible="1"/>
+                    <field name="pay_date"/>
+                    <field name="lift_date"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" placeholder="Name, TIN, Email, or Reference" readonly="state in ['cancel', 'purchase']"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="invisible">is_party_sale</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']" position="after">
+                    <page name="note" string="Notes" invisible="not is_party_sale">
+                        <group>
+                            <label for="note" string="Notes" invisible="not is_party_sale"/>
+                            <field name="note" placeholder="Describe Notes" nolabel="1" invisible="not is_party_sale"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='tax_totals']" position="after">
+                    <div style="text-align:right;">
+                        <button string="Confirm" name="action_confirm" type="object" context="{'validate_analytic': True}" data-hotkey="q" invisible="state not in ['draft','sent']"/>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <!-- <field name="through"/> -->
+                    <field name="credit_charge_type_ids"/>
+                    <div class="o_field_widget o_field_char">
+                        <button name="action_view_charge_lines"
+                                type="object"
+                                class="oe_link">
+                            Charges List
+                        </button>
+                    </div>
+                </xpath>
+                <!-- <xpath expr="//header//button[@type='action']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath> -->
+
+                <xpath expr="//sheet" position="inside">
+                    <field name="is_immediate_payment" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//header//button[@type='action']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- <xpath expr="//page[@name='order_lines']//field[@name='order_line']/list//field[@name='product_uom_qty']"
+                    position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//field[@name='order_line']/list//field[@name='qty_delivered']"
+                    position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//field[@name='order_line']/list//field[@name='qty_invoiced']"
+                    position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//field[@name='order_line']/list//field[@name='price_subtotal']"
+                    position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+ -->
+                <xpath expr="//page[@name='order_lines']//field[@name='order_line']/list/field[@name='price_unit']"
+                    position="before">
+                    <field name="delay_days"/>
+                    <field name="delay_charge"/>
+                    <field name="original_price"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="view_order_tree_custom" model="ir.ui.view">
+            <field name="name">sale.order.tree.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="is_party_sale" column_invisible="1"/>
+                    <!-- <field name="broker_id" string="Broker" optional="hide"/> -->
+                </xpath>
+                <!-- <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Customer/Party</attribute>
+                </xpath> -->
+<!--                 <xpath expr="//list" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="copy">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath> -->
+            </field>
+        </record>
+
+        <record id="view_sale_order_party_item_report_tree" model="ir.ui.view">
+            <field name="name">sale.order.party.item.report.tree</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <list create="0" edit="0" delete="0">
+                    <field name="date_order" string="Date" widget="date"/>
+                    <field name="name" string="Party Allot No"/>
+                    <field name="partner_id" string="Party"/>
+                    <field name="broker_allotment_id" string="Broker" optional="show"/>
+                    <field name="product" string="Item" width="150" optional="show"/>
+                    <field name="tendor_rate" string="PO Rate" optional="show"/>
+                    <field name="broker_rate" string="B Rate" optional="show"/>
+                    <field name="brk_qty" widget="integer" optional="show"/>
+                    <field name="delivery" string="Delivery" widget="integer" optional="show"/>
+                    <field name="qty" string="Party Qty" sum="Total Qty" widget="integer" optional="show"/>
+                    <field name="bal_qty" widget="integer" optional="show"/>
+                    <field name="rate" string="Party Rate" optional="show"/>
+                    <field name="rate_type" string="Rate Type" optional="show"/>
+                    <field name="payment_term_id" string="CR Days" optional="show"/>
+                    <field name="amount_total" string="Total Amount" sum="Total" optional="show"/>
+                    <field name="state" decoration-success="state == 'sale'" decoration-info="state == 'draft'" decoration-muted="state == 'sent'" widget="badge" optional="show"/>
+                </list>
+            </field>
+        </record>
+        <record id="action_party_allotment_tree_view" model="ir.actions.act_window">
+            <field name="name">Day Wise Party Allotment</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="party_sale_modifier_hmrc.view_sale_order_party_item_report_tree"/>
+            <field name="domain">[('is_party_sale', '=', True),('state', '!=', 'cancel')]</field>
+            <field name="context">
+              {
+                  
+              }
+            </field>
+        </record>
+
+
+        <record id="view_quotation_tree_custom" model="ir.ui.view">
+            <field name="name">sale.order.quotation.tree.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="is_party_sale" column_invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="domain">[('is_party_sale', '=', False), ('state', 'in', ('draft', 'sent'))]</field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="domain">[('is_party_sale', '=', False), ('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+        </record>
+
+        <record id="view_partner_form_fassi" model="ir.ui.view">
+            <field name="name">res.partner.form.fassi</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='category_id']" position="before">
+                    <field name="fassi_no"/>
+                </xpath>
+                <xpath expr="//sheet/group" position="inside">
+                    <group string="Credit Charge">
+                        <field name="credit_charge_type_id"/>
+                        <!-- <field name="credit_days"/> -->
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="account_move_form_party_order_stat" model="ir.ui.view">
+            <field name="name">account.move.form.party.order.stat</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='sale_order_count']" position="attributes">
+                    <attribute name="string">Party Order</attribute>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="view_party_sale_order_tree_inherit" model="ir.ui.view">
+            <field name="name">party.sale.order.tree.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="qty" string="Ordered Qty" widget="integer" optional="show"/>
+                    <field name="delivery" string="Delivered Qty" widget="integer" decoration-info="delivery" optional="show"/>
+                    <field name="balance_qty" string="Balance Qty" widget="integer" decoration-success="balance_qty" optional="show"/>
+                    <field name="rate" string="Rate" optional="show"/>
+                    <field name="tender_no" optional="show"/>
+                    <field name="vendor_id" optional="show"/>
+                    <field name="item_id" width="150" optional="show"/>
+                    <field name="po_rate" optional="show"/>
+                    <field name="brk_rate" optional="show"/>
+		    <field name="diff_rate" optional="show"/>
+                    <field name="amount_tax" string="GST Amount" optional="show"/>
+                    <field name="broker_no" optional="show"/>
+                    <field name="broker_id" optional="show"/>
+                    <field name="total_bal_amount" string="Total Bal Amount" sum="Total" widget="integer" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="widget">date</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='amount_total']" position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+            </field>    
+        </record>
+
+
+    <record id="sale_order_search_inherit_balance" model="ir.ui.view">
+        <field name="name">sale.order.search.balance.filter</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search/group" position="after">
+                <filter name="balance_qty_available"
+                    string="Balance Qty > 0"
+                    domain="[('balance_qty','>',0)]"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="party_sale_modifier_hmrc.action_party_sale_order" model="ir.actions.act_window">
+        <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+        <field name="context">
+            {
+                'default_is_party_sale_modifier_hmrc': True,
+                'search_default_balance_qty_available': 1
+            }
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>

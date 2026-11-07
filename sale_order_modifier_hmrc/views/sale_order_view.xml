@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_sale_order_form_broker" model="ir.ui.view">
+            <field name="name">sale.order.broker.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list/field[@name='product_id']" position="after">
+                    <field name="po_line_id" force_save='1' column_invisible='1'/>
+                    <field name="party_po_line_id" force_save='1' column_invisible='1'/>
+                    <field name="broker_allotment_line_id" force_save='1' column_invisible='1'/>
+                </xpath>
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                    <button type="object" name="open_tender" class="oe_stat_button" icon="fa-balance-scale" invisible="not tender_id">
+                        Tender
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="domain">[('state', 'in', ('draft', 'sent'))]</field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+        </record>
+    </data>
+</odoo>

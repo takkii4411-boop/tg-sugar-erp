@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="payment_term_form_credit_charge" model="ir.ui.view">
+        <field name="name">account.payment.term.form.credit.charge</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group" position="inside">
+                <group string="Credit Delay Charge">
+                    <field name="include_credit_charge"/>
+                    <field name="credit_days"
+                           invisible="not include_credit_charge"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

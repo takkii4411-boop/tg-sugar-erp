@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_res_partner_form_broker" model="ir.ui.view">
+            <field name="name">res.partner.broker.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="is_broker_partner" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_partner_filter_broker_party" model="ir.ui.view">
+            <field name="name">res.partner.search.broker.party</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//filter[@name='type_company']" position="after">
+                    <filter string="Broker" name="filter_broker"
+                            domain="[('is_broker_partner','=',True)]"/>
+                    <!-- <filter string="Party/Vendor" name="filter_party"
+                            domain="[('is_broker_partner','=',False)]"/> -->
+                    <filter string="Party" name="filter_party"
+                    domain="[('customer_rank','>',0), ('is_broker_partner','=',False)]"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

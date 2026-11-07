@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="group_create_broker_allotment" model="res.groups">
+            <field name="name">Create Broker Allotment</field>
+        </record>
+
+        <record id="group_unlock_tender_booking" model="res.groups">
+            <field name="name">Unlock Tender Booking</field>
+        </record>
+
+        <record id="group_master_admin" model="res.groups">
+            <field name="name">Master Admin</field>
+        </record>
+        <record id="group_return_do_access" model="res.groups">
+            <field name="name">Return DO Access</field>
+        </record>
+    </data>
+</odoo>

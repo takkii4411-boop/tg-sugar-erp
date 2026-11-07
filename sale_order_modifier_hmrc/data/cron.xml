@@ -1,0 +1,11 @@
+<odoo>
+    <record id="tg_sugar_overdue_invoice_scheduler" model="ir.cron">
+        <field name="name">TG Sugar Overdue Invoice Reminder</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">model.tg_sugar_send_overdue_invoice_reminder()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

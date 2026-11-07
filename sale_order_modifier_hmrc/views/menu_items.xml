@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_broker_root" name="Broker Process" web_icon="sale_order_modifier_hmrc,static/description/broker.png"
+            action="action_broker_allotment"/>
+
+
+        <menuitem id="menu_broker_allotment" name="Broker Allotment" parent="menu_broker_root" sequence="5" action="action_broker_allotment"/>
+
+        <record id="action_broker_customer" model="ir.actions.act_window">
+            <field name="name">Broker</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('is_broker_partner', '=', True)]</field>
+            <field name="context">{'default_is_broker_partner': True}</field>
+        </record>
+
+        <menuitem id="menu_broker_customer" name="Broker" parent="menu_broker_root" action="action_broker_customer" sequence="30"/>
+
+        <menuitem id="menu_report_root" name="Report" parent="menu_broker_root" sequence="1"/>
+
+        <menuitem id="menu_outstanding_balance"
+            name="Outstanding Broker View"
+            parent="menu_report_root"
+            action="sale_order_modifier_hmrc.action_broker_balance_report_wizard"
+            sequence="20"/>
+
+
+        <record id="action_broker_allotment_list_view" model="ir.actions.act_window">
+            <field name="name">Day Wise Allotment Report</field>
+            <field name="res_model">broker.allotment</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="sale_order_modifier_hmrc.view_broker_report_tree"/>
+            <field name="domain">[('state', '!=', 'cancel')]</field>
+            <field name="context">
+              {
+                  
+              }
+            </field>
+        </record>
+
+        <menuitem id="menu_broker_allotment_tree" name="Broker Pending List" parent="menu_report_root" action="action_broker_allotment_list_view" sequence="10"/>
+
+        <record id="action_broker_item" model="ir.actions.act_window">
+            <field name="name">Items</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('sale_ok', '=', True)]</field>
+            <field name="context">{'default_sale_ok': True, 'default_tracking': 'lot'}</field>
+        </record>
+
+        <menuitem id="menu_item_main" name="Items" parent="menu_broker_root" sequence="40"/>
+        <menuitem id="menu_broker_items" name="Items" parent="menu_item_main" action="action_broker_item" sequence="10"/>
+          
+        <record id="action_broker_variants" model="ir.actions.act_window">
+            <field name="name">Variants</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('sale_ok', '=', True)]</field>
+            <field name="context">{'default_sale_ok': True, 'default_tracking': 'lot'}</field>
+        </record>
+          
+        <menuitem id="menu_broker_variants" name="Item Variants" parent="menu_item_main" action="action_broker_variants" sequence="20"/>
+        
+        <record id="action_broker_uom" model="ir.actions.act_window">
+            <field name="name">Units and Packagings</field>
+            <field name="res_model">uom.uom</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="sale_order_modifier_hmrc.view_broker_allotment_list"/>
+            <field name="context">{}</field>
+        </record>
+        
+        <menuitem id="menu_broker_uom" name="Units and Packagings" parent="menu_item_main" action="action_broker_uom" sequence="30"/>
+
+    </data>
+</odoo>

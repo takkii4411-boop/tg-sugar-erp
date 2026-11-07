@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="demo_vendor_1" model="res.partner">
+            <field name="name">Rajesh Traders</field>
+            <field name="supplier_rank">1</field>
+        </record>
+
+        <record id="demo_vendor_2" model="res.partner">
+            <field name="name">Sharma Enterprises</field>
+            <field name="supplier_rank">1</field>
+        </record>
+
+        <record id="demo_vendor_3" model="res.partner">
+            <field name="name">Kumar Suppliers</field>
+            <field name="supplier_rank">1</field>
+        </record>
+
+        <record id="demo_vendor_4" model="res.partner">
+            <field name="name">Patel Trading Co.</field>
+            <field name="supplier_rank">1</field>
+        </record>
+
+        <record id="demo_vendor_5" model="res.partner">
+            <field name="name">Singh Industries</field>
+            <field name="supplier_rank">1</field>
+        </record>
+
+        <record id="demo_tender_1" model="purchase.order">
+            <field name="name">BK/0001</field>
+            <field name="partner_id" ref="demo_vendor_1"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0001</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=90)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=75)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="state">done</field>
+        </record>
+
+        <record id="demo_tender_2" model="purchase.order">
+            <field name="name">BK/0002</field>
+            <field name="partner_id" ref="demo_vendor_2"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0002</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=85)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=70)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=55)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_3" model="purchase.order">
+            <field name="name">BK/0003</field>
+            <field name="partner_id" ref="demo_vendor_3"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0003</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=80)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=65)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=50)).strftime('%Y-%m-%d')"/>
+            <field name="state">locked</field>
+            <field name="is_locked">True</field>
+        </record>
+
+        <record id="demo_tender_4" model="purchase.order">
+            <field name="name">BK/0004</field>
+            <field name="partner_id" ref="demo_vendor_4"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0004</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=75)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_5" model="purchase.order">
+            <field name="name">BK/0005</field>
+            <field name="partner_id" ref="demo_vendor_5"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0005</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=70)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=55)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=40)).strftime('%Y-%m-%d')"/>
+            <field name="state">done</field>
+        </record>
+
+        <record id="demo_tender_6" model="purchase.order">
+            <field name="name">BK/0006</field>
+            <field name="partner_id" ref="demo_vendor_1"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0006</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=65)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=50)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=35)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_7" model="purchase.order">
+            <field name="name">BK/0007</field>
+            <field name="partner_id" ref="demo_vendor_2"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0007</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="state">locked</field>
+            <field name="is_locked">True</field>
+        </record>
+
+        <record id="demo_tender_8" model="purchase.order">
+            <field name="name">BK/0008</field>
+            <field name="partner_id" ref="demo_vendor_3"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0008</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=55)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=40)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=25)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_9" model="purchase.order">
+            <field name="name">BK/0009</field>
+            <field name="partner_id" ref="demo_vendor_4"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0009</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=50)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=35)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=20)).strftime('%Y-%m-%d')"/>
+            <field name="state">cancel</field>
+        </record>
+
+        <record id="demo_tender_10" model="purchase.order">
+            <field name="name">BK/0010</field>
+            <field name="partner_id" ref="demo_vendor_5"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0010</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_11" model="purchase.order">
+            <field name="name">BK/0011</field>
+            <field name="partner_id" ref="demo_vendor_1"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0011</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=40)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=25)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d')"/>
+            <field name="state">done</field>
+        </record>
+
+        <record id="demo_tender_12" model="purchase.order">
+            <field name="name">BK/0012</field>
+            <field name="partner_id" ref="demo_vendor_2"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0012</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=35)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=20)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_13" model="purchase.order">
+            <field name="name">BK/0013</field>
+            <field name="partner_id" ref="demo_vendor_3"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0013</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="DateTime.now().strftime('%Y-%m-%d')"/>
+            <field name="state">locked</field>
+            <field name="is_locked">True</field>
+        </record>
+
+        <record id="demo_tender_14" model="purchase.order">
+            <field name="name">BK/0014</field>
+            <field name="partner_id" ref="demo_vendor_4"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0014</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=25)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_15" model="purchase.order">
+            <field name="name">BK/0015</field>
+            <field name="partner_id" ref="demo_vendor_5"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0015</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=20)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=10)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_16" model="purchase.order">
+            <field name="name">BK/0016</field>
+            <field name="partner_id" ref="demo_vendor_1"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0016</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="DateTime.now().strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="state">locked</field>
+            <field name="is_locked">True</field>
+        </record>
+
+        <record id="demo_tender_17" model="purchase.order">
+            <field name="name">BK/0017</field>
+            <field name="partner_id" ref="demo_vendor_2"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0017</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=20)).strftime('%Y-%m-%d')"/>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="demo_tender_18" model="purchase.order">
+            <field name="name">BK/0018</field>
+            <field name="partner_id" ref="demo_vendor_3"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0018</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() + timedelta(days=10)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=25)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+        <record id="demo_tender_19" model="purchase.order">
+            <field name="name">BK/0019</field>
+            <field name="partner_id" ref="demo_vendor_4"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0019</field>
+            <field name="booking_date" eval="DateTime.now().strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="demo_tender_20" model="purchase.order">
+            <field name="name">BK/0020</field>
+            <field name="partner_id" ref="demo_vendor_5"/>
+            <field name="is_tender_booking">True</field>
+            <field name="booking_no">BK/0020</field>
+            <field name="booking_date" eval="(DateTime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+            <field name="pay_date" eval="(DateTime.now() + timedelta(days=12)).strftime('%Y-%m-%d')"/>
+            <field name="date_planned" eval="(DateTime.now() + timedelta(days=27)).strftime('%Y-%m-%d')"/>
+            <field name="state">purchase</field>
+        </record>
+
+    </data>
+</odoo>

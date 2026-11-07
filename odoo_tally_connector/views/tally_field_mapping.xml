@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="field_mappning_form">
+            <field name="name">Field Mappning Form</field>
+            <field name="model">tally.field.mapping</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Field Mapping">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                       <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                            <field name="active" invisible="1"/>
+                        </div>
+                        <field name="tally_mapping_line_ids">
+                            <list editable="bottom">
+                                <field name="tally_field_id" required="1"  options="{'no_open': True, 'no_create': True}"/>
+                                <field name="model_field_id" required="not fixed" invisible="fixed" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="default" invisible="not fixed"/>
+                                <field name="fixed" />
+                                <field name="fixed_text" required="fixed" invisible="not fixed"/>
+                            </list>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="field_mappning_list">
+            <field name="name">Field Mapping list</field>
+            <field name="model">tally.field.mapping</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Field Mapping">
+                    <field name="name" />
+                    <field name="tally_mapping_line_ids" />
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="tally_field_mapping_action">
+            <field name="name">Tally Field Mapping</field>
+            <field name="res_model">tally.field.mapping</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="field_mappning_list" />
+        </record>
+
+        <menuitem name="Tally Field Mapping" id="field_mappning_menu" parent="account_tally_configuration" action="tally_field_mapping_action" sequence="2"/>
+
+        <record model="ir.ui.view" id="facebook_fields_list">
+            <field name="name">Tally XML Tags</field>
+            <field name="model">tally.tag</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="tally_xml_action">
+            <field name="name">Tally XML Tags</field>
+            <field name="res_model">tally.tag</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="facebook_fields_list" />
+        </record>
+        <menuitem name="Tally XML Tags" id="tally_xml_tags_menu" parent="account_tally_configuration" action="tally_xml_action" sequence="3"/>
+    </data>
+</odoo>

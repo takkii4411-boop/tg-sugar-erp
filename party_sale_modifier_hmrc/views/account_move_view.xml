@@ -1,0 +1,205 @@
+<odoo>
+    <record id="view_move_form_driver_details" model="ir.ui.view">
+        <field name="name">account.move.form.driver.details</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+                <field name="driver_name"/>
+                <field name="driver_number"/>
+            </xpath>
+            <xpath expr="//group[@id='header_left_group']" position="inside">
+                <field name="customer_id" invisible="move_type != 'out_invoice'"/>
+                <field name="vehicle_number"/>
+                <field name="transport_name"/> 
+                <field name="do_number"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="auto_tds_apply" invisible="state != 'draft' or move_type != 'in_invoice'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']"
+                position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/form//field[@name='quantity']"
+                position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+
+            <!-- <xpath expr="//field[@name='invoice_date_due']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath> -->
+            
+            <xpath expr="//group[@id='header_right_group']/field[@name='invoice_date'][1]" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+
+            <xpath expr="//group[@id='header_right_group']/field[@name='invoice_date'][2]" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='price_subtotal']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+
+
+            <xpath expr="//header" position="inside">
+                <button name="action_add_overdue_credit_delay_charge" type="object" string="Add Credit Delay Charge" class="btn-primary" invisible="show_overdue_charge_button == False"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_delay_charges"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        string="Delay Charges">
+                    <field name="delay_charge_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_vendor_bill_tree_inherit_custom" model="ir.ui.view">
+        <field name="name">account.move.tree.inherit.vendor.bill</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_partner_display_name']" position="after">
+                <field name="broker_name"/>
+                <field name="vehicle_number"/>
+                <field name="broker_rate"/>
+                <field name="total_qty" widget="integer" sum="Total"/>
+                <field name="avg_rate"/>
+                <field name="invoice_no_custom" optional="hide"/>
+                <field name="invoice_date_custom" optional="hide"/>
+                <field name="customer_name"/>
+                <field name="so_rate" optional="hide"/>
+                <field name="diff" optional="hide"/>
+                <field name="d_amt" optional="hide" widget="integer" sum="Total"/>
+                       
+            </xpath>
+            <xpath expr="//field[@name='amount_untaxed_in_currency_signed']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_total_in_currency_signed']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_tax_signed']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_residual_signed']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="invoice_delay_charge_form_custom" model="ir.ui.view">
+        <field name="name">invoice.delay.charge.form.custom</field>
+        <field name="model">invoice.delay.charge</field>
+        <field name="arch" type="xml">
+            <form string="Delay Charge">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="invoice_id"/>
+                            <field name="partner_id"/>
+                            <field name="total_qty"/>
+                            <field name="label"/>
+                            <field name="delay_days_to"/>
+                        </group>
+
+                        <group>
+                            <field name="product_id"/>
+                            <field name="currency_id"/>
+                             <field name="date"/>
+                            <field name="delay_amount"/>
+                            <!-- <field name="tax_amount"/>
+                            <field name="total_amount_with_tax"/> -->
+                            
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_invoice_delay_charge_tree" model="ir.ui.view">
+        <field name="name">invoice.delay.charge.tree</field>
+        <field name="model">invoice.delay.charge</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="invoice_id"/>
+                <field name="partner_id"/>
+                <field name="total_qty"/>
+                <field name="rate_per_quintal"/>
+                <!-- <field name="delay_days_from"/> -->
+                <field name="delay_days_to"/>
+                <field name="delay_amount"/>
+                <field name="date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_res_config_settings_credit_delay_charge" model="ir.ui.view">
+        <field name="name">res.config.settings.credit.delay.charge</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//app[@name='account']" position="inside">
+                <!-- <div class="app_settings_block" string="Credit Delay Charge">
+                    <h2>Credit Delay Charge</h2>
+
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="credit_delay_charge_account_id"/>
+                                <div class="text-muted">
+                                    Account used for Credit Delay Charge invoice lines.
+                                </div>
+                                <field name="credit_delay_charge_account_id"
+                                       domain="[('active','=',True)]"/>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="app_settings_block" string="Credit Delay Charge">
+                    <h2>Freight Charge Account</h2>
+
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="freight_expense_account_id"/>
+                                <div class="text-muted">
+                                    Account used for Debit Freight Charges.
+                                </div>
+                                <field name="freight_expense_account_id"
+                                       domain="[('active','=',True)]"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="freight_payable_account_id"/>
+                                <div class="text-muted">
+                                    Account used for Credit Freight Charges.
+                                </div>
+                                <field name="freight_payable_account_id"
+                                       domain="[('active','=',True)]"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="freight_journal_id"/>
+                                <div class="text-muted">
+                                </div>
+                                <field name="freight_journal_id"
+                                       domain="[('active','=',True)]"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+        
+</odoo>

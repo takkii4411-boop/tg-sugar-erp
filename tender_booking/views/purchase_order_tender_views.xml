@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_purchase_order_tender_list" model="ir.ui.view">
+            <field name="name">purchase.order.tender.list</field>
+            <field name="model">purchase.order</field>
+            <field name="arch" type="xml">
+                <list string="Tender Bookings" decoration-info="state=='draft'" decoration-success="state=='done'">
+                    <field name="is_tender_booking" column_invisible="1"/>
+                    <field name="booking_date" string="Booking Date" widget="date"/>
+                    <field name="name" string="Tender No"/>
+                    <field name="partner_id" string="Vendor Name" />
+                    <field name="product" string="Item" width="150" optional="show"/>
+                    <!-- <field name="name" string="Booking Number"/> -->
+                    <field name="qty" string="Tender Qty" sum="Total" widget="integer" optional="show"/>
+                    <field name="bal_qty" string="Balance Qty" sum="Total" widget="integer" decoration-success="bal_qty" optional="show"/>
+                    <field name="brk_bal_qty" string="Brk Balance Qty" sum="Total" widget="integer" optional="show"/>
+                    <field name="party_so_qty_bal" sum="Total" widget="integer" optional="show"/>
+                    <field name="del_bal_qty" string="Del Balance Qty" sum="Total" widget="integer" optional="show"/>
+                    <field name="invoice_qty" string="Invoiced Qty" widget="integer" optional="show"/>
+                    <field name="bill_qty" widget="integer" optional="show"/>
+                    <field name="pre_close_qty" widget="integer" optional="hide"/>
+                    <!-- <field name="delivery" string="Delivery" sum="Total" widget="integer" optional="show"/> -->
+                    <!-- <field name="brk_qty" string="Broker Qty" sum="Total" widget="integer" decoration-info="brk_qty" optional="show"/> -->
+                    <!-- <field name="prt_qty" widget="integer" decoration-info="prt_qty" optional="show"/> -->
+                    <field name="rate" string=" Tender Rate" optional="show"/>
+                    <!-- <field name="diff_rate" optional="show"/> -->
+                    <field name="amount_tax" string="GST Amount" optional="show"/>
+                    <field name="pay_date" optional="hide" widget="date"/>
+                    <field name="lift_date" string="Lifting Date" optional="hide" widget="date"/>
+                    <field name="total_bal_amount" sum="Total Amount" string="Total Bal Amount" optional="hide" widget="integer"/>
+                    <field name="amount_total" sum="Total Amount" string="Total Amount" widget="integer" optional="hide"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state in ('purchase','done')" decoration-warning="locked" decoration-muted="state=='cancel'" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_tender_form" model="ir.ui.view">
+            <field name="name">purchase.order.tender.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_broker_wizard" string="Create Broker Allotment" type="object" invisible="state != 'purchase'" class="btn-primary" groups="tender_booking.group_create_broker_allotment"/>
+                    <button name="action_open_preclose_wizard" type="object" string="Pre Close Qty" class="btn-primary"/>
+                </xpath>
+
+                <xpath expr="//button[@name='button_unlock']" position="attributes">
+                    <attribute name="groups">purchase.group_purchase_manager,tender_booking.group_unlock_tender_booking</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="attributes">
+                    <attribute name="invisible">state == 'purchase'</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+               
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="is_tender_booking" invisible="1"/>
+                    <field name="dest_address_id" invisible="1"/>
+                    <field name="receipt_reminder_email" invisible="1"/>
+                    <field name="date_approve" invisible="1"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="name" placeholder="Enter Booking Number" string="Booking Number" required="1" readonly="1"/>
+                    <field name="voucher_date"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Vendor/Party</attribute>
+                    <attribute name="default_focus">1</attribute>
+                    <attribute name="domain">[('supplier_rank', '>', 0)]</attribute> 
+                </xpath>
+                
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="dispatch_location_id" string="Dispatch From" domain="[('usage', '=', 'internal')]" required="1" options="{'no_create': True, 'no_create_edit': True, 'no_open': True}" readonly="state == 'purchase'"/>
+                    
+                    <field name="contract_no" placeholder="Enter Contract Number" invisible="not is_tender_booking" readonly="state == 'purchase'"/>
+                    <field name="vendor_lot_no" invisible='1'/>
+                </xpath>
+                
+                <xpath expr="//div[@name='reminder']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//label[@for='receipt_reminder_email']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='picking_type_id']" position="after">
+                    <field name="pay_date" invisible=" not is_tender_booking" readonly="state == 'purchase'"/>
+                    <field name="lift_date" string="Lifting Date" invisible=" not is_tender_booking" readonly="state == 'purchase'"/>
+                    <field name="booking_date" string="Booking Date" required="1" invisible=" not is_tender_booking" readonly="state == 'purchase'"/>
+                    <field name="godown_type" string="Godown" readonly="state == 'purchase'"/>
+                </xpath>
+
+
+                <xpath expr="//div[@name='date_planned_div']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//label[@for='date_planned']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='dest_address_id']" position="replace">
+                    <field name="dest_address_id" invisible="1"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='effective_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//field[@name='product_id']" position="attributes">
+                    <attribute name="string">Item (Grade)</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']//field[@name='product_qty']" position="attributes">
+                    <attribute name="string">Qty</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']//field[@name='product_qty']" position="attributes">
+                    <attribute name='force_save'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//field[@name='product_qty']" position="before">
+                    <field name="cus_packing_id" optional="hide"/>
+                    <field name="packing_qty" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//field[@name='product_uom_id']" position="before">
+                    <field name="broker_quantity" readonly="1" column_invisible="parent.state != 'purchase'"/>
+                    <field name="party_quantity" readonly="1" column_invisible="parent.state != 'purchase'" optional="hide"/>
+                    <field name="balance_qty" readonly="1" column_invisible="parent.state != 'purchase'"/>
+                    <field name="pre_close_qty" readonly="1" column_invisible="parent.state != 'purchase'"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']//field[@name='price_unit']" position="attributes">
+                    <attribute name="string">Rate</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="string">Amt</attribute>
+                    <!-- <attribute name="widget">integer</attribute> -->
+                </xpath>
+                
+                <xpath expr="//page[@name='products']" position="attributes">
+                    <attribute name="string">Item Details</attribute>
+                </xpath>
+
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button type="object" name="open_broker_allotment" class="oe_stat_button" icon="fa-balance-scale" invisible="broker_allotment_count == 0">
+                        <field name="broker_allotment_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+                <xpath expr="//group[@class='oe_subtotal_footer']" position="inside">
+                <!-- <xpath expr="//field[@name='tax_totals']" position="after"> -->
+                    <div style="margin-top:70px; text-align:right;">
+                        <button name="button_confirm" type="object" invisible="state not in ['draft','sent']" context="{'validate_analytic': True}" string="Confirm Order" id="draft_confirm" data-hotkey="q"/>
+                    </div>
+                </xpath>
+
+                <!-- <xpath expr="//page[@name='products']//field[@name='order_line']/list//field[@name='product_qty']"
+                       position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+                <xpath expr="//page[@name='products']//field[@name='order_line']/list//field[@name='qty_received']"
+                       position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+                <xpath expr="//page[@name='products']//field[@name='order_line']/list//field[@name='qty_invoiced']"
+                       position="attributes">
+                    <attribute name="widget">integer</attribute>
+                </xpath>
+ -->
+
+             <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">state != 'draft'</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']//button[@name='action_view_picking']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//header//button[@name='action_view_picking']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+                
+            </field>
+        </record>
+
+        <record id="view_purchase_order_tender_tree" model="ir.ui.view">
+            <field name="name">purchase.order.tender.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="arch" type="xml">
+                <list create="0" edit="0" delete="0">
+                    <field name="booking_date" string="Date"/>
+                    <field name="name" string="Tendor No"/>
+                    <field name="partner_id" string="Vendor Name"/>
+                    <field name="product" string="Item" width="150" optional="show"/>
+                    <field name="qty" string="Tender Qty" widget="integer" sum="Total Qty" optional="show"/>
+                    <field name="delivery" widget="integer" optional="show"/>
+                    <field name="brk_qty" string="Broker Qty" widget="integer" sum="Total Brk Qty" optional="show"/>
+                    <!-- <field name="prt_qty" string="Party Qty" sum="Total Party Qty" optional="show"/> -->
+                    <field name="bal_qty" string="Balance Qty" widget="integer" sum="Total Bal Qty" optional="show"/>
+                    <field name="rate" string="Tender Rate" optional="show"/>
+                    <field name="amount_total" string="Total Amount" widget="monetary" sum="Total" optional="show"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state in ('purchase','done')" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tender_booked_inventory_tree" model="ir.ui.view">
+            <field name="name">purchase.order.tender.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="arch" type="xml">
+                <list create="0" edit="0" delete="0">
+                    <field name="booking_date" string="Date"/>
+                    <field name="name" string="Tendor No" width="100"/>
+                    <field name="dispatch_location_id" string="Location" width="150" optional="show"/>
+                    <field name="product" string="Item" width="150" optional="show"/>
+                    <field name="qty" string="Booked Inventory" widget="integer" sum="Total Qty" optional="show" width="100"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_tender_confirm_inventory_tree" model="ir.ui.view">
+            <field name="name">purchase.order.tender.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="arch" type="xml">
+                <list create="0" edit="0" delete="0">
+                    <field name="booking_date" string="Date"/>
+                    <field name="name" string="Tendor No" width="100"/>
+                    <field name="dispatch_location_id" string="Location" width="150" optional="show"/>
+                    <field name="product" string="Item" width="150" optional="show"/>
+                    <field name="bill_qty" string='Confirmed Inventory' widget="integer" optional="show" width="100"/>
+
+                </list>
+            </field>
+        </record>
+
+        <record id="action_tender_booked_inventory" model="ir.actions.act_window">
+            <field name="name">Booked Inventory</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="tender_booking.view_tender_booked_inventory_tree"/>
+            <field name="domain">[('is_tender_booking', '=', True),('state', '!=', 'cancel')]</field>
+            <field name="context">
+              {
+                
+              }
+            </field>
+        </record>
+        <record id="action_tender_confirm_inventory" model="ir.actions.act_window">
+            <field name="name">Confirm Inventory</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="tender_booking.view_tender_confirm_inventory_tree"/>
+            <field name="domain">[('is_tender_booking', '=', True),('state', '!=', 'cancel')]</field>
+            <field name="context">
+              {
+                
+              }
+            </field>
+        </record>
+        <record id="action_tender_allotment_tree_view" model="ir.actions.act_window">
+            <field name="name">Day Wise Tender Allotment</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="tender_booking.view_purchase_order_tender_tree"/>
+            <field name="domain">[('is_tender_booking', '=', True),('state', '!=', 'cancel')]</field>
+            <field name="context">
+              {
+                
+              }
+            </field>
+        </record>
+
+        <record id="action_tender_booking" model="ir.actions.act_window">
+            <field name="name">Tender Bookings</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'list', 'view_id': ref('view_purchase_order_tender_list')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_purchase_order_tender_form')})]"/>
+            <field name="domain">[('is_tender_booking', '=', True)]</field>
+            <field name="context">{'default_is_tender_booking': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Tender Booking
+                </p>
+                <p>
+                    Manage tender bookings with vendor/party integration.
+                </p>
+            </field>
+        </record>
+
+        <record id="view_company_form_inherit_product_line" model="ir.ui.view">
+            <field name="name">res.company.form.product.line.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="allow_multiple_line"/>
+                </xpath>
+                <xpath expr="//field[@name='color']" position="after">
+                    <field name="fssai_no"/>
+                    <field name="fax"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_purchase_order_form_vendor_bill_button" model="ir.ui.view">
+            <field name="name">purchase.order.form.vendor.bill.button</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//sheet" position="inside">
+                    <field name="vendor_bill_created" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//header" position="inside">
+
+                    <button
+                        name="action_create_vendor_bill"
+                        type="object"
+                        string="Create Vendor Bill"
+                        class="btn-primary"
+                        confirm="Are you sure you want to create Vendor Bill?"
+                        invisible="state != 'purchase' or not vendor_bill_created"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+    	<record id="purchase_order_search_inherit_balance" model="ir.ui.view">
+    		<field name="name">purchase.order.search.balance.filter</field>
+    		<field name="model">purchase.order</field>
+    		<field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+    		<field name="arch" type="xml">
+
+    		    <xpath expr="//search/group" position="after">
+    		        <filter name="balance_qty_available"
+    		            string="Balance Qty > 0"
+    		            domain="[('bal_qty','>',0)]"/>
+                    <filter name="balance_qty_zero"
+                        string="Balance Qty = 0"
+                        domain="[('bal_qty','=',0)]"/>
+    		    </xpath>
+
+
+    		</field>
+    	</record>
+
+    	<record id="tender_booking.action_tender_booking" model="ir.actions.act_window">
+    		<field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+    		<field name="context">
+    		    {
+    		        'default_is_tender_booking': True,
+    		        'search_default_balance_qty_available': 1
+    		    }
+    		</field>
+    	</record>
+    </data>
+</odoo>
