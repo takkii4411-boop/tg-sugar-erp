@@ -2,7 +2,7 @@
 
 ![Odoo](https://img.shields.io/badge/Odoo-19.0-purple) ![Modules](https://img.shields.io/badge/Custom%20Modules-9-blue) ![License](https://img.shields.io/badge/License-LGPL--3-green)
 
-A complete **sugar-factory ERP** customization suite on **Odoo 19** — featuring an **Odoo ↔ Tally Pradesh connector** (xml-based export/invoice mapping), **tender purchase management**, **broker portals**, **party sales**, **automatic database backups** and UX hardening modules.
+A complete **sugar-factory ERP** customization suite on **Odoo 19** — featuring an **Odoo ↔ Tally Pradesh connector** (xml-based export/invoice mapping, built & debugged per client needs), **tender purchase management**, **broker portals**, **party sales**, **automatic database backups** (customized OSS base) and UX hardening modules.
 
 ```
 tg-sugar-erp/
